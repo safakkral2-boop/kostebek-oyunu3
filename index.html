@@ -1,0 +1,8643 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Köstebek Avı</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: #111;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game {
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    background: linear-gradient(#79c850, #3f8f32);
+    position: relative;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.12) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 35%, rgba(255,255,255,.10) 0 2px, transparent 3px),
+        radial-gradient(circle at 40% 75%, rgba(0,0,0,.08) 0 3px, transparent 4px),
+        linear-gradient(#7fcf52 0%, #63ad3e 45%, #43862f 100%);
+}
+
+/* BAŞLANGIÇ EKRANI */
+
+.start-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 48px;
+    margin-bottom: 5px;
+}
+
+.title {
+    color: white;
+    font-size: 38px;
+    font-weight: 900;
+    text-shadow: 0 4px 0 #24551b, 0 6px 10px rgba(0,0,0,.35);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #eaffdf;
+    font-size: 16px;
+    margin-bottom: 35px;
+}
+
+.start-box {
+    width: 100%;
+    max-width: 360px;
+    background: rgba(255,255,255,.96);
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.35);
+}
+
+.start-box h2 {
+    margin: 0 0 8px;
+    color: #333;
+    font-size: 25px;
+}
+
+.start-box p {
+    margin: 0 0 20px;
+    color: #777;
+    font-size: 14px;
+}
+
+.name-input {
+    width: 100%;
+    height: 55px;
+    border: 2px solid #ddd;
+    border-radius: 14px;
+    padding: 0 16px;
+    font-size: 17px;
+    outline: none;
+    text-align: center;
+}
+
+.name-input:focus {
+    border-color: #4caf35;
+}
+
+.create-button {
+    width: 100%;
+    height: 55px;
+    margin-top: 14px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(#68c94d, #3e9d2e);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #2e7423;
+}
+
+.create-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #2e7423;
+}
+
+.error {
+    min-height: 20px;
+    margin-top: 10px;
+    color: #e53935;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* OLUŞTURULDU EKRANI */
+
+.created-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    background: linear-gradient(#79c850, #3f8f32);
+}
+
+.created-box {
+    width: 100%;
+    max-width: 360px;
+    background: white;
+    border-radius: 24px;
+    padding: 30px 25px;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(0,0,0,.35);
+}
+
+.success-icon {
+    font-size: 55px;
+}
+
+.created-box h2 {
+    margin: 10px 0;
+    color: #333;
+}
+
+.created-name {
+    color: #4b9f36;
+    font-size: 21px;
+    font-weight: bold;
+    margin: 10px 0 18px;
+}
+
+.id-title {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.player-id {
+    background: #f1f1f1;
+    border: 2px dashed #4b9f36;
+    border-radius: 12px;
+    padding: 13px 8px;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #333;
+    user-select: text;
+}
+
+.id-info {
+    color: #888;
+    font-size: 12px;
+    margin-top: 9px;
+    line-height: 1.4;
+}
+
+.continue-button {
+    width: 100%;
+    height: 52px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 14px;
+    background: #333;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<div class="background"></div>
+
+<!-- BAŞLANGIÇ -->
+
+<div class="start-screen" id="startScreen">
+
+    <div class="logo">🐹</div>
+
+    <div class="title">
+        KÖSTEBEK<br>AVI
+    </div>
+
+    <div class="subtitle">
+        Köstebekleri yakala, en yüksek skoru yap!
+    </div>
+
+    <div class="start-box">
+
+        <h2>Oyuncu Oluştur</h2>
+
+        <p>
+            Oyuna başlamak için oyuncu adını belirle.
+        </p>
+
+        <input
+            id="playerName"
+            class="name-input"
+            type="text"
+            maxlength="16"
+            placeholder="Oyuncu adın"
+            autocomplete="off"
+        >
+
+        <button class="create-button" onclick="createPlayer()">
+            🎮 Oyuncu Oluştur
+        </button>
+
+        <div class="error" id="error"></div>
+
+    </div>
+
+</div>
+
+
+<!-- OLUŞTURULDU -->
+
+<div class="created-screen" id="createdScreen">
+
+    <div class="created-box">
+
+        <div class="success-icon">🎉</div>
+
+        <h2>Oyuncu Oluşturuldu!</h2>
+
+        <div class="created-name" id="createdName"></div>
+
+        <div class="id-title">
+            OYUNCU ID
+        </div>
+
+        <div class="player-id" id="playerId"></div>
+
+        <div class="id-info">
+            Bu ID sana özel olarak oluşturuldu.
+            <br>
+            Oyuncu hesabın bu cihazda kayıtlı.
+        </div>
+
+        <button class="continue-button" onclick="continueGame()">
+            Devam Et
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   KAYITLI OYUNCU KONTROLÜ
+   ===================================== */
+
+window.addEventListener("load", function() {
+
+    const savedName =
+        localStorage.getItem("kostebek_player_name");
+
+    const savedID =
+        localStorage.getItem("kostebek_player_id");
+
+
+    /*
+       Eğer isim VE ID varsa,
+       bu cihazda oyuncu zaten oluşturulmuştur.
+    */
+
+    if (savedName && savedID) {
+
+        /*
+           Başlangıç ekranını tamamen kapat.
+        */
+
+        document.getElementById("startScreen").style.display =
+            "none";
+
+
+        /*
+           Burada ileride direkt ANA MENÜ açılacak.
+           
+           Şimdilik test amacıyla
+           kayıtlı oyuncuyu gösteriyoruz.
+        */
+
+        document.getElementById("createdName").textContent =
+            savedName;
+
+        document.getElementById("playerId").textContent =
+            savedID;
+
+        document.getElementById("createdScreen").style.display =
+            "flex";
+    }
+
+});
+
+
+/* =====================================
+   ID OLUŞTURMA
+   ===================================== */
+
+function generatePlayerID() {
+
+    let id = "";
+
+    for (let i = 0; i < 8; i++) {
+
+        id += Math.floor(Math.random() * 10);
+
+    }
+
+    return id;
+}
+
+
+/* =====================================
+   OYUNCU OLUŞTUR
+   ===================================== */
+
+function createPlayer() {
+
+    const input =
+        document.getElementById("playerName");
+
+    const error =
+        document.getElementById("error");
+
+    let name =
+        input.value.trim();
+
+    error.textContent = "";
+
+
+    /* İSİM KONTROLÜ */
+
+    if (name.length < 3) {
+
+        error.textContent =
+            "Oyuncu adı en az 3 karakter olmalı.";
+
+        return;
+    }
+
+
+    if (name.length > 16) {
+
+        error.textContent =
+            "Oyuncu adı en fazla 16 karakter olabilir.";
+
+        return;
+    }
+
+
+    /*
+       YENİ OYUNCU İÇİN ID OLUŞTUR
+    */
+
+    const playerID =
+        generatePlayerID();
+
+
+    /*
+       KALICI OLARAK KAYDET
+    */
+
+    localStorage.setItem(
+        "kostebek_player_name",
+        name
+    );
+
+    localStorage.setItem(
+        "kostebek_player_id",
+        playerID
+    );
+
+
+    /*
+       EKRANA YAZ
+    */
+
+    document.getElementById("createdName").textContent =
+        name;
+
+    document.getElementById("playerId").textContent =
+        playerID;
+
+
+    /*
+       BAŞLANGIÇ EKRANINI KAPAT
+    */
+
+    document.getElementById("startScreen").style.display =
+        "none";
+
+    document.getElementById("createdScreen").style.display =
+        "flex";
+}
+
+
+/* =====================================
+   DEVAM
+   ===================================== */
+
+function continueGame() {
+
+    /*
+       Şimdilik test.
+       Daha sonra burası ANA MENÜ olacak.
+    */
+
+    alert(
+        "Kayıt başarılı! 🎮\n\n" +
+        "Oyuncu: " +
+        localStorage.getItem("kostebek_player_name") +
+        "\nID: " +
+        localStorage.getItem("kostebek_player_id")
+    );
+
+}
+
+
+/* =====================================
+   ENTER
+   ===================================== */
+
+document
+    .getElementById("playerName")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            createPlayer();
+
+        }
+
+    });
+
+</script>
+
+</body>
+  <!-- =====================================================
+     KÖSTEBEK AVI - ANA MENÜ GÜNCELLEME
+     ===================================================== -->
+
+<style>
+
+#mainMenu {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    flex-direction: column;
+    padding: 22px;
+    background:
+        radial-gradient(circle at 20% 15%, rgba(255,255,255,.12) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 35%, rgba(255,255,255,.10) 0 2px, transparent 3px),
+        linear-gradient(#78c94d, #438b31);
+    overflow-y: auto;
+}
+
+.menu-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.menu-logo {
+    color: white;
+    font-size: 25px;
+    font-weight: 900;
+    text-shadow: 0 3px 0 #2d641f;
+}
+
+
+/* =====================================
+   TOPLAM PUAN PANELİ
+   ===================================== */
+
+.total-score-panel {
+    background: rgba(255,255,255,.96);
+    border-radius: 18px;
+    padding: 9px 15px;
+    min-width: 125px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,.22);
+}
+
+.total-score-label {
+    color: #888;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: .5px;
+}
+
+.total-score {
+    color: #333;
+    font-size: 23px;
+    font-weight: 900;
+    margin-top: 2px;
+}
+
+
+/* =====================================
+   HOŞ GELDİN
+   ===================================== */
+
+.menu-welcome {
+    color: white;
+    text-align: center;
+    margin: 5px 0 25px;
+}
+
+.menu-welcome h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 900;
+    text-shadow: 0 4px 0 #2d641f;
+}
+
+.menu-welcome p {
+    margin: 7px 0 0;
+    color: #eaffdf;
+    font-size: 14px;
+}
+
+
+/* =====================================
+   OYUN BUTONU
+   ===================================== */
+
+.play-button {
+    width: 100%;
+    min-height: 105px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(#ffcf45, #f19b19);
+    box-shadow: 0 7px 0 #b96c0d, 0 12px 25px rgba(0,0,0,.22);
+    color: white;
+    font-size: 27px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-bottom: 22px;
+    text-shadow: 0 3px 0 rgba(130,70,0,.4);
+}
+
+.play-button:active {
+    transform: translateY(6px);
+    box-shadow: 0 1px 0 #b96c0d;
+}
+
+
+/* =====================================
+   MENÜ GRID
+   ===================================== */
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.menu-button {
+    min-height: 125px;
+    border: none;
+    border-radius: 22px;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 7px 18px rgba(0,0,0,.22);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #333;
+}
+
+.menu-button:active {
+    transform: scale(.96);
+}
+
+.menu-icon {
+    font-size: 38px;
+}
+
+.menu-button-title {
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.menu-button-subtitle {
+    font-size: 11px;
+    color: #888;
+}
+
+.menu-bottom {
+    text-align: center;
+    color: rgba(255,255,255,.75);
+    font-size: 11px;
+    margin-top: 25px;
+    padding-bottom: 10px;
+}
+
+
+@media (max-width: 360px) {
+
+    #mainMenu {
+        padding: 15px;
+    }
+
+    .menu-welcome h1 {
+        font-size: 26px;
+    }
+
+    .play-button {
+        min-height: 90px;
+        font-size: 23px;
+    }
+
+    .menu-button {
+        min-height: 110px;
+    }
+
+    .menu-icon {
+        font-size: 32px;
+    }
+
+    .total-score-panel {
+        min-width: 105px;
+    }
+
+}
+
+</style>
+
+
+<!-- =====================================================
+     ANA MENÜ
+     ===================================================== -->
+
+<div id="mainMenu">
+
+    <!-- ÜST KISIM -->
+
+    <div class="menu-top">
+
+        <div class="menu-logo">
+            🐹 KÖSTEBEK AVI
+        </div>
+
+        <!-- SADECE TOPLAM PUAN -->
+
+        <div class="total-score-panel">
+
+            <div class="total-score-label">
+                TOPLAM PUAN
+            </div>
+
+            <div
+                class="total-score"
+                id="totalScore">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- HOŞ GELDİN -->
+
+    <div class="menu-welcome">
+
+        <h1 id="menuWelcomeName">
+            Hoş Geldin!
+        </h1>
+
+        <p>
+            Hazırsan köstebekleri yakalamaya başla!
+        </p>
+
+    </div>
+
+
+    <!-- OYUNA GİR -->
+
+    <button
+        class="play-button"
+        onclick="openGame()">
+
+        🐹 &nbsp; OYUNA GİR
+
+    </button>
+
+
+    <!-- MENÜLER -->
+
+    <div class="menu-grid">
+
+        <button
+            class="menu-button"
+            onclick="openProfile()">
+
+            <div class="menu-icon">
+                👤
+            </div>
+
+            <div class="menu-button-title">
+                PROFİL
+            </div>
+
+            <div class="menu-button-subtitle">
+                Oyuncu profilin
+            </div>
+
+        </button>
+
+
+        <button
+            class="menu-button"
+            onclick="openMarket()">
+
+            <div class="menu-icon">
+                🛒
+            </div>
+
+            <div class="menu-button-title">
+                MARKET
+            </div>
+
+            <div class="menu-button-subtitle">
+                Güçlendiriciler
+            </div>
+
+        </button>
+
+
+        <button
+            class="menu-button"
+            onclick="openLeaderboard()">
+
+            <div class="menu-icon">
+                🏆
+            </div>
+
+            <div class="menu-button-title">
+                SIRALAMA
+            </div>
+
+            <div class="menu-button-subtitle">
+                En iyi oyuncular
+            </div>
+
+        </button>
+
+
+        <button
+            class="menu-button"
+            onclick="openSettings()">
+
+            <div class="menu-icon">
+                ⚙️
+            </div>
+
+            <div class="menu-button-title">
+                AYARLAR
+            </div>
+
+            <div class="menu-button-subtitle">
+                Oyun ayarları
+            </div>
+
+        </button>
+
+    </div>
+
+
+    <div class="menu-bottom">
+        Köstebek Avı • Oyuncu sistemi aktif
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   TOPLAM PUAN
+   ===================================== */
+
+function getTotalScore() {
+
+    let score =
+        localStorage.getItem("kostebek_total_score");
+
+    if (score === null) {
+
+        score = 0;
+
+        localStorage.setItem(
+            "kostebek_total_score",
+            "0"
+        );
+
+    }
+
+    return Number(score);
+}
+
+
+function updateTotalScore() {
+
+    const score =
+        getTotalScore();
+
+    const scoreElement =
+        document.getElementById("totalScore");
+
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            score.toLocaleString("tr-TR");
+
+    }
+
+}
+
+
+/* =====================================
+   ANA MENÜ
+   ===================================== */
+
+function showMainMenu() {
+
+    const startScreen =
+        document.getElementById("startScreen");
+
+    const createdScreen =
+        document.getElementById("createdScreen");
+
+    const mainMenu =
+        document.getElementById("mainMenu");
+
+
+    if (startScreen) {
+
+        startScreen.style.display =
+            "none";
+
+    }
+
+
+    if (createdScreen) {
+
+        createdScreen.style.display =
+            "none";
+
+    }
+
+
+    const playerName =
+        localStorage.getItem(
+            "kostebek_player_name"
+        );
+
+
+    if (playerName) {
+
+        document.getElementById(
+            "menuWelcomeName"
+        ).textContent =
+            "Hoş Geldin, " +
+            playerName +
+            "!";
+
+    }
+
+
+    updateTotalScore();
+
+
+    mainMenu.style.display =
+        "flex";
+
+}
+
+
+/* =====================================
+   SAYFA AÇILIŞI
+   ===================================== */
+
+window.addEventListener("load", function() {
+
+    const playerName =
+        localStorage.getItem(
+            "kostebek_player_name"
+        );
+
+    const playerID =
+        localStorage.getItem(
+            "kostebek_player_id"
+        );
+
+
+    if (playerName && playerID) {
+
+        showMainMenu();
+
+    }
+
+});
+
+
+/* =====================================
+   DEVAM
+   ===================================== */
+
+function continueGame() {
+
+    showMainMenu();
+
+}
+
+
+/* =====================================
+   MENÜ BUTONLARI
+   ===================================== */
+
+function openGame() {
+
+    alert(
+        "🐹 Köstebek Avı\n\n" +
+        "Oyun ekranı bir sonraki aşamada yapılacak."
+    );
+
+}
+
+
+function openProfile() {
+
+    alert(
+        "👤 Profil\n\n" +
+        "Profil sistemi daha sonra eklenecek."
+    );
+
+}
+
+
+function openMarket() {
+
+    alert(
+        "🛒 Market\n\n" +
+        "Market sistemi daha sonra eklenecek."
+    );
+
+}
+
+
+function openLeaderboard() {
+
+    alert(
+        "🏆 Sıralama\n\n" +
+        "Online sıralama Firebase aşamasında aktif olacak."
+    );
+
+}
+
+
+function openSettings() {
+
+    alert(
+        "⚙️ Ayarlar\n\n" +
+        "Ayarlar sistemi ileride eklenecek."
+    );
+
+}
+
+</script>
+  <style>
+#gameScreen{
+    position:absolute;
+    inset:0;
+    z-index:100;
+    display:none;
+    overflow:hidden;
+    background:
+        linear-gradient(to bottom,#69b542 0%,#4d9634 45%,#70492a 46%,#59371e 100%);
+}
+
+#gameScreen::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:46%;
+    background:
+        repeating-linear-gradient(
+            95deg,
+            transparent 0px,
+            transparent 12px,
+            rgba(30,90,20,.12) 13px,
+            transparent 15px
+        ),
+        linear-gradient(to bottom,#79c94e,#4f9635);
+    z-index:0;
+}
+
+.game-top{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    z-index:30;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px;
+}
+
+.game-timer,
+.game-score{
+    min-width:90px;
+    padding:9px 13px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+}
+
+.game-timer{
+    background:rgba(0,0,0,.72);
+    color:white;
+}
+
+.game-score{
+    background:rgba(255,255,255,.95);
+    color:#333;
+}
+
+.game-timer-label,
+.game-score-label{
+    font-size:10px;
+    font-weight:bold;
+    opacity:.75;
+}
+
+#gameTime,
+#roundScore{
+    font-size:25px;
+    font-weight:900;
+}
+
+#moleField{
+    position:absolute;
+    top:75px;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    z-index:5;
+}
+
+.mole{
+    position:absolute;
+    width:72px;
+    height:82px;
+    transform:translate(-50%,-70%);
+    z-index:10;
+    cursor:pointer;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:manipulation;
+    animation:moleIn .18s ease-out;
+}
+
+@keyframes moleIn{
+    from{
+        opacity:0;
+        transform:translate(-50%,-20%) scale(.4);
+    }
+    to{
+        opacity:1;
+        transform:translate(-50%,-70%) scale(1);
+    }
+}
+
+.mole-body{
+    position:absolute;
+    left:8px;
+    right:8px;
+    bottom:8px;
+    height:65px;
+    border-radius:50% 50% 45% 45%;
+    background:radial-gradient(circle at 35% 30%,#795548 0%,#5b3928 40%,#382318 100%);
+    box-shadow:
+        inset -5px -5px 10px rgba(0,0,0,.25),
+        0 5px 5px rgba(0,0,0,.3);
+}
+
+.mole-ear{
+    position:absolute;
+    top:4px;
+    width:21px;
+    height:21px;
+    border-radius:50%;
+    background:#5b3928;
+    border:3px solid #3b2418;
+}
+
+.mole-ear.left{
+    left:8px;
+}
+
+.mole-ear.right{
+    right:8px;
+}
+
+.mole-face{
+    position:absolute;
+    left:50%;
+    top:22px;
+    transform:translateX(-50%);
+    width:55px;
+    height:42px;
+    border-radius:50%;
+    background:#70452d;
+}
+
+.mole-eye{
+    position:absolute;
+    top:10px;
+    width:7px;
+    height:9px;
+    border-radius:50%;
+    background:#111;
+}
+
+.mole-eye.left{
+    left:13px;
+}
+
+.mole-eye.right{
+    right:13px;
+}
+
+.mole-nose{
+    position:absolute;
+    left:50%;
+    bottom:6px;
+    transform:translateX(-50%);
+    width:17px;
+    height:13px;
+    border-radius:50%;
+    background:#19100c;
+}
+
+.special-mole .mole-body{
+    background:linear-gradient(
+        135deg,
+        #ff4f81,
+        #9c4dff,
+        #36a9ff,
+        #35d56f,
+        #ffd83d
+    );
+    background-size:250% 250%;
+    animation:rainbow 1.5s linear infinite;
+    box-shadow:
+        0 0 12px rgba(255,255,255,.7),
+        0 0 25px rgba(255,80,180,.5);
+}
+
+@keyframes rainbow{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.special-label{
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    background:linear-gradient(#ffe45c,#ffad18);
+    color:white;
+    padding:3px 7px;
+    border-radius:8px;
+    font-size:9px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.bomb{
+    position:absolute;
+    width:68px;
+    height:68px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(
+        circle at 30% 25%,
+        #777 0%,
+        #292929 45%,
+        #0d0d0d 100%
+    );
+    box-shadow:
+        inset -5px -5px 10px rgba(0,0,0,.5),
+        0 5px 8px rgba(0,0,0,.35);
+    z-index:11;
+    cursor:pointer;
+    user-select:none;
+    touch-action:manipulation;
+    animation:bombIn .2s ease-out,bombPulse .8s ease-in-out infinite alternate;
+}
+
+@keyframes bombIn{
+    from{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(.3);
+    }
+    to{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1);
+    }
+}
+
+@keyframes bombPulse{
+    from{
+        box-shadow:
+            inset -5px -5px 10px rgba(0,0,0,.5),
+            0 5px 8px rgba(0,0,0,.35);
+    }
+    to{
+        box-shadow:
+            inset -5px -5px 10px rgba(0,0,0,.5),
+            0 0 16px rgba(255,70,30,.8);
+    }
+}
+
+.bomb-fuse{
+    position:absolute;
+    width:18px;
+    height:8px;
+    top:-5px;
+    right:4px;
+    border-top:4px solid #5b3928;
+    transform:rotate(-25deg);
+}
+
+.bomb-spark{
+    position:absolute;
+    width:9px;
+    height:9px;
+    top:-10px;
+    right:-5px;
+    border-radius:50%;
+    background:#ffb300;
+    box-shadow:0 0 8px #ff3d00;
+}
+
+.point-popup{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    z-index:100;
+    pointer-events:none;
+    font-size:28px;
+    font-weight:900;
+    animation:pointFloat .75s ease-out forwards;
+    text-shadow:0 3px 5px rgba(0,0,0,.6);
+}
+
+.point-positive{
+    color:#ffe033;
+}
+
+.point-special{
+    color:white;
+    text-shadow:
+        0 0 5px #ff2d8a,
+        0 0 12px #7d4dff,
+        0 3px 5px rgba(0,0,0,.6);
+}
+
+.point-negative{
+    color:#ff3d30;
+}
+
+@keyframes pointFloat{
+    0%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(.7);
+    }
+    35%{
+        opacity:1;
+        transform:translate(-50%,-85%) scale(1.15);
+    }
+    100%{
+        opacity:0;
+        transform:translate(-50%,-150%) scale(1);
+    }
+}
+
+#countdownScreen{
+    position:absolute;
+    inset:0;
+    z-index:200;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:rgba(20,60,15,.88);
+    color:white;
+}
+
+.countdown-title{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+#countdownNumber{
+    font-size:100px;
+    font-weight:900;
+    line-height:1;
+    text-shadow:0 6px 0 rgba(0,0,0,.35);
+}
+
+#gameOverScreen{
+    position:absolute;
+    inset:0;
+    z-index:300;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(20,45,15,.86);
+    padding:25px;
+}
+
+.game-over-box{
+    width:100%;
+    max-width:340px;
+    background:white;
+    border-radius:25px;
+    padding:30px 25px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.4);
+}
+
+.game-over-icon{
+    font-size:55px;
+}
+
+.game-over-box h2{
+    margin:10px 0;
+    font-size:28px;
+    color:#333;
+}
+
+.game-over-score-label{
+    color:#888;
+    font-size:13px;
+    font-weight:bold;
+}
+
+#finalRoundScore{
+    font-size:45px;
+    font-weight:900;
+    color:#4c9e34;
+    margin:5px 0;
+}
+
+#finalTotalScore{
+    font-size:14px;
+    color:#666;
+    margin-bottom:20px;
+}
+
+.back-menu-button{
+    width:100%;
+    height:52px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(#69c94d,#3d982c);
+    color:white;
+    font-size:17px;
+    font-weight:900;
+    box-shadow:0 5px 0 #2d7021;
+}
+
+.back-menu-button:active{
+    transform:translateY(4px);
+    box-shadow:0 1px 0 #2d7021;
+}
+</style>
+
+<div id="gameScreen">
+
+    <div class="game-top">
+
+        <div class="game-timer">
+            <div class="game-timer-label">KALAN SÜRE</div>
+            <div id="gameTime">60</div>
+        </div>
+
+        <div class="game-score">
+            <div class="game-score-label">TUR PUANI</div>
+            <div id="roundScore">0</div>
+        </div>
+
+    </div>
+
+    <div id="moleField"></div>
+
+    <div id="countdownScreen">
+        <div class="countdown-title">HAZIR OL!</div>
+        <div id="countdownNumber">3</div>
+    </div>
+
+    <div id="gameOverScreen">
+
+        <div class="game-over-box">
+
+            <div class="game-over-icon">🐹</div>
+
+            <h2>Oyun Bitti!</h2>
+
+            <div class="game-over-score-label">
+                BU TURDA KAZANDIĞIN PUAN
+            </div>
+
+            <div id="finalRoundScore">0</div>
+
+            <div id="finalTotalScore">
+                Toplam Puan: 0
+            </div>
+
+            <button
+                class="back-menu-button"
+                onclick="closeGame()">
+                🏠 Ana Menüye Dön
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let gameRunning = false;
+let gameTimeLeft = 60;
+let roundScoreValue = 0;
+let gameTimerInterval = null;
+let moleSpawnInterval = null;
+
+function openGame(){
+
+    const gameScreen =
+        document.getElementById("gameScreen");
+
+    const mainMenu =
+        document.getElementById("mainMenu");
+
+    if(mainMenu){
+        mainMenu.style.display = "none";
+    }
+
+    gameScreen.style.display = "block";
+
+    startCountdown();
+}
+
+function startCountdown(){
+
+    const countdown =
+        document.getElementById("countdownScreen");
+
+    const number =
+        document.getElementById("countdownNumber");
+
+    countdown.style.display = "flex";
+
+    let count = 3;
+
+    number.textContent = count;
+
+    const interval = setInterval(function(){
+
+        count--;
+
+        if(count > 0){
+
+            number.textContent = count;
+
+        }else{
+
+            clearInterval(interval);
+
+            countdown.style.display = "none";
+
+            startMoleGame();
+        }
+
+    },1000);
+}
+
+function startMoleGame(){
+
+    gameRunning = true;
+    gameTimeLeft = 60;
+    roundScoreValue = 0;
+
+    if(gameTimerInterval){
+        clearInterval(gameTimerInterval);
+    }
+
+    if(moleSpawnInterval){
+        clearInterval(moleSpawnInterval);
+    }
+
+    document.getElementById("gameTime").textContent = "60";
+    document.getElementById("roundScore").textContent = "0";
+    document.getElementById("gameOverScreen").style.display = "none";
+    document.getElementById("moleField").innerHTML = "";
+
+    spawnMole();
+
+    startMoleSpawner();
+
+    gameTimerInterval = setInterval(function(){
+
+        if(!gameRunning){
+            return;
+        }
+
+        gameTimeLeft--;
+
+        document.getElementById("gameTime").textContent =
+            gameTimeLeft;
+
+        if(gameTimeLeft <= 0){
+            endMoleGame();
+        }
+
+    },1000);
+}
+
+function getSpawnSpeed(){
+
+    const elapsed = 60 - gameTimeLeft;
+
+    /*
+       Başlangıç: 1200 ms
+       45 saniye: yaklaşık 1065 ms
+       30 saniye: yaklaşık 930 ms
+       15 saniye: yaklaşık 795 ms
+       Son bölüm: yaklaşık 700 ms
+
+       Böylece giderek zorlaşır fakat
+       oyun imkansız hale gelmez.
+    */
+
+    let speed = 1200 - (elapsed * 8);
+
+    if(speed < 700){
+        speed = 700;
+    }
+
+    return speed;
+}
+
+function startMoleSpawner(){
+
+    if(!gameRunning){
+        return;
+    }
+
+    if(moleSpawnInterval){
+        clearTimeout(moleSpawnInterval);
+    }
+
+    moleSpawnInterval = setTimeout(function(){
+
+        if(!gameRunning){
+            return;
+        }
+
+        spawnMole();
+
+        startMoleSpawner();
+
+    },getSpawnSpeed());
+}
+
+function spawnMole(){
+
+    if(!gameRunning){
+        return;
+    }
+
+    const field =
+        document.getElementById("moleField");
+
+    /*
+       Ekranda aynı anda en fazla 5
+       aktif hedef bulunur.
+    */
+
+    let activeObjects = 0;
+
+    for(let i = 0; i < field.children.length; i++){
+
+        if(
+            field.children[i].classList.contains("mole") ||
+            field.children[i].classList.contains("bomb")
+        ){
+            activeObjects++;
+        }
+
+    }
+
+    if(activeObjects >= 5){
+        return;
+    }
+
+    const random = Math.random();
+
+    if(random < 0.12){
+
+        spawnBomb();
+
+    }else if(random < 0.27){
+
+        spawnSpecialMole();
+
+    }else{
+
+        spawnNormalMole();
+
+    }
+}
+
+function getSafePosition(){
+
+    const field =
+        document.getElementById("moleField");
+
+    const width = field.clientWidth;
+    const height = field.clientHeight;
+
+    let x = 60;
+    let y = 80;
+
+    for(let attempt = 0; attempt < 40; attempt++){
+
+        x = 55 + Math.random() * Math.max(1,width - 110);
+        y = 75 + Math.random() * Math.max(1,height - 130);
+
+        let safe = true;
+
+        for(let i = 0; i < field.children.length; i++){
+
+            const element = field.children[i];
+
+            if(
+                !element.classList.contains("mole") &&
+                !element.classList.contains("bomb")
+            ){
+                continue;
+            }
+
+            const oldX = parseFloat(element.dataset.x);
+            const oldY = parseFloat(element.dataset.y);
+
+            if(
+                Number.isNaN(oldX) ||
+                Number.isNaN(oldY)
+            ){
+                continue;
+            }
+
+            const distance = Math.sqrt(
+                Math.pow(x - oldX,2) +
+                Math.pow(y - oldY,2)
+            );
+
+            if(distance < 105){
+
+                safe = false;
+                break;
+
+            }
+        }
+
+        if(safe){
+
+            return {
+                x:x,
+                y:y
+            };
+
+        }
+    }
+
+    return {
+        x:x,
+        y:y
+    };
+}
+
+function spawnNormalMole(){
+
+    const field =
+        document.getElementById("moleField");
+
+    const position = getSafePosition();
+
+    const mole =
+        document.createElement("div");
+
+    mole.className = "mole";
+
+    mole.dataset.x = position.x;
+    mole.dataset.y = position.y;
+
+    mole.style.left = position.x + "px";
+    mole.style.top = position.y + "px";
+
+    mole.innerHTML = `
+        <div class="mole-body">
+            <div class="mole-ear left"></div>
+            <div class="mole-ear right"></div>
+            <div class="mole-face">
+                <div class="mole-eye left"></div>
+                <div class="mole-eye right"></div>
+                <div class="mole-nose"></div>
+            </div>
+        </div>
+    `;
+
+    mole.addEventListener("pointerdown",function(event){
+
+        event.preventDefault();
+
+        hitMole(mole,10,"normal");
+
+    });
+
+    field.appendChild(mole);
+
+    setTimeout(function(){
+
+        if(mole.parentNode){
+            mole.remove();
+        }
+
+    },1800);
+}
+
+function spawnSpecialMole(){
+
+    const field =
+        document.getElementById("moleField");
+
+    const position = getSafePosition();
+
+    const mole =
+        document.createElement("div");
+
+    mole.className = "mole special-mole";
+
+    mole.dataset.x = position.x;
+    mole.dataset.y = position.y;
+
+    mole.style.left = position.x + "px";
+    mole.style.top = position.y + "px";
+
+    mole.innerHTML = `
+        <div class="special-label">ÖZEL +30</div>
+
+        <div class="mole-body">
+            <div class="mole-ear left"></div>
+            <div class="mole-ear right"></div>
+
+            <div class="mole-face">
+                <div class="mole-eye left"></div>
+                <div class="mole-eye right"></div>
+                <div class="mole-nose"></div>
+            </div>
+        </div>
+    `;
+
+    mole.addEventListener("pointerdown",function(event){
+
+        event.preventDefault();
+
+        hitMole(mole,30,"special");
+
+    });
+
+    field.appendChild(mole);
+
+    setTimeout(function(){
+
+        if(mole.parentNode){
+            mole.remove();
+        }
+
+    },1800);
+}
+
+function spawnBomb(){
+
+    const field =
+        document.getElementById("moleField");
+
+    const position = getSafePosition();
+
+    const bomb =
+        document.createElement("div");
+
+    bomb.className = "bomb";
+
+    bomb.dataset.x = position.x;
+    bomb.dataset.y = position.y;
+
+    bomb.style.left = position.x + "px";
+    bomb.style.top = position.y + "px";
+
+    bomb.innerHTML = `
+        <div class="bomb-fuse"></div>
+        <div class="bomb-spark"></div>
+    `;
+
+    bomb.addEventListener("pointerdown",function(event){
+
+        event.preventDefault();
+
+        hitBomb(bomb);
+
+    });
+
+    field.appendChild(bomb);
+
+    setTimeout(function(){
+
+        if(bomb.parentNode){
+            bomb.remove();
+        }
+
+    },2000);
+}
+
+function hitMole(mole,points,type){
+
+    if(!gameRunning){
+        return;
+    }
+
+    if(!mole.parentNode){
+        return;
+    }
+
+    const x = parseFloat(mole.dataset.x);
+    const y = parseFloat(mole.dataset.y);
+
+    mole.remove();
+
+    roundScoreValue += points;
+
+    document.getElementById("roundScore").textContent =
+        roundScoreValue;
+
+    if(type === "special"){
+
+        showPointPopup(
+            x,
+            y,
+            "+30",
+            "point-special"
+        );
+
+    }else{
+
+        showPointPopup(
+            x,
+            y,
+            "+10",
+            "point-positive"
+        );
+
+    }
+}
+
+function hitBomb(bomb){
+
+    if(!gameRunning){
+        return;
+    }
+
+    if(!bomb.parentNode){
+        return;
+    }
+
+    const x = parseFloat(bomb.dataset.x);
+    const y = parseFloat(bomb.dataset.y);
+
+    bomb.remove();
+
+    roundScoreValue -= 10;
+
+    document.getElementById("roundScore").textContent =
+        roundScoreValue;
+
+    showPointPopup(
+        x,
+        y,
+        "-10",
+        "point-negative"
+    );
+}
+
+function showPointPopup(x,y,text,className){
+
+    const field =
+        document.getElementById("moleField");
+
+    const popup =
+        document.createElement("div");
+
+    popup.className =
+        "point-popup " + className;
+
+    popup.textContent = text;
+
+    popup.style.left = x + "px";
+    popup.style.top = y + "px";
+
+    field.appendChild(popup);
+
+    setTimeout(function(){
+
+        if(popup.parentNode){
+            popup.remove();
+        }
+
+    },800);
+}
+
+function endMoleGame(){
+
+    if(!gameRunning){
+        return;
+    }
+
+    gameRunning = false;
+
+    if(gameTimerInterval){
+        clearInterval(gameTimerInterval);
+        gameTimerInterval = null;
+    }
+
+    if(moleSpawnInterval){
+        clearTimeout(moleSpawnInterval);
+        moleSpawnInterval = null;
+    }
+
+    document.getElementById("moleField").innerHTML = "";
+
+    let totalScore = Number(
+        localStorage.getItem("kostebek_total_score") || 0
+    );
+
+    totalScore += roundScoreValue;
+
+    localStorage.setItem(
+        "kostebek_total_score",
+        String(totalScore)
+    );
+
+    document.getElementById("finalRoundScore").textContent =
+        roundScoreValue;
+
+    document.getElementById("finalTotalScore").textContent =
+        "Toplam Puan: " +
+        totalScore.toLocaleString("tr-TR");
+
+    document.getElementById("gameOverScreen").style.display =
+        "flex";
+}
+
+function closeGame(){
+
+    const gameScreen =
+        document.getElementById("gameScreen");
+
+    const gameOver =
+        document.getElementById("gameOverScreen");
+
+    if(gameTimerInterval){
+        clearInterval(gameTimerInterval);
+        gameTimerInterval = null;
+    }
+
+    if(moleSpawnInterval){
+        clearTimeout(moleSpawnInterval);
+        moleSpawnInterval = null;
+    }
+
+    gameRunning = false;
+
+    gameScreen.style.display = "none";
+    gameOver.style.display = "none";
+
+    if(typeof showMainMenu === "function"){
+        showMainMenu();
+    }
+}
+
+</script>
+ <style>
+#profileScreen{
+    position:fixed;
+    inset:0;
+    z-index:5000;
+    display:none;
+    overflow-y:auto;
+    background:linear-gradient(180deg,#073b1d,#0d6b32,#052c16);
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.profileBox{
+    width:92%;
+    max-width:500px;
+    margin:20px auto 40px;
+}
+
+.profileHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.profileHeader h2{
+    margin:0;
+    font-size:24px;
+}
+
+.profileBack{
+    border:0;
+    border-radius:12px;
+    padding:10px 15px;
+    background:#174d29;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.profileCard{
+    background:rgba(0,0,0,.25);
+    border-radius:22px;
+    padding:25px 15px;
+    text-align:center;
+}
+
+.profileAvatarFrame{
+    width:140px;
+    height:140px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.profileAvatar{
+    width:108px;
+    height:108px;
+    border-radius:50%;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:62px;
+    position:relative;
+    z-index:2;
+}
+
+.profileName{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.profileID{
+    margin-top:7px;
+    color:#bde8ca;
+    font-size:14px;
+}
+
+.profileScore{
+    margin-top:8px;
+    color:#ffd84d;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.profileSection{
+    margin-top:14px;
+    border-radius:16px;
+    overflow:hidden;
+    background:rgba(0,0,0,.25);
+}
+
+.profileSectionButton{
+    width:100%;
+    border:0;
+    padding:16px;
+    background:#155d2e;
+    color:#fff;
+    text-align:left;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.profileSectionContent{
+    display:none;
+    padding:15px;
+}
+
+
+/* =========================
+   AVATARLAR
+   ========================= */
+
+.avatarGrid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.avatarButton{
+    height:65px;
+    border:2px solid transparent;
+    border-radius:14px;
+    background:#164b28;
+    font-size:35px;
+}
+
+.avatarButton.selected{
+    border-color:#ffd84d;
+    box-shadow:0 0 12px rgba(255,216,77,.7);
+}
+
+
+/* =========================
+   ÇERÇEVELER
+   ========================= */
+
+.frameGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.frameButton{
+    min-height:105px;
+    border:2px solid transparent;
+    border-radius:15px;
+    background:#164b28;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+}
+
+.frameButton.selected{
+    border-color:#ffd84d;
+}
+
+.frameButton.locked{
+    opacity:.4;
+}
+
+.framePreview{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:31px;
+    position:relative;
+}
+
+.frameTitle{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.frameInfo{
+    font-size:10px;
+    color:#ffd84d;
+}
+
+
+/* =========================
+   NORMAL ÇERÇEVELER
+   ========================= */
+
+.frameBasic{
+    border:4px solid #777;
+}
+
+.frameBronze{
+    border:5px solid #cd7f32;
+}
+
+.frameSilver{
+    border:5px solid #d8e0e5;
+}
+
+
+/* =========================
+   ALTIN
+   ========================= */
+
+.frameGold{
+    border:5px solid #ffd700;
+    box-shadow:0 0 15px #ffd700;
+}
+
+
+/* =========================
+   AVCI
+   ========================= */
+
+.frameHunter{
+    border:5px solid #ff8c00;
+    box-shadow:
+        0 0 10px #ff8c00,
+        0 0 25px #ff5500;
+    animation:hunterPulse 1.4s infinite alternate;
+}
+
+@keyframes hunterPulse{
+    from{filter:brightness(.85);}
+    to{filter:brightness(1.35);}
+}
+
+.frameHunter:before,
+.frameHunter:after{
+    content:"◆";
+    position:absolute;
+    top:-15px;
+    color:#ffd166;
+    animation:floatDiamond 1s infinite alternate;
+}
+
+.frameHunter:before{
+    left:7px;
+}
+
+.frameHunter:after{
+    right:7px;
+}
+
+@keyframes floatDiamond{
+    from{transform:translateY(0);}
+    to{transform:translateY(-5px);}
+}
+
+
+/* =========================
+   ZÜMRÜT
+   ========================= */
+
+.frameEmerald{
+    border:5px dashed #20e890;
+    box-shadow:
+        0 0 10px #20e890,
+        0 0 25px #00ff88;
+    animation:emeraldPulse 1.5s infinite alternate;
+}
+
+@keyframes emeraldPulse{
+    from{filter:brightness(.8);}
+    to{filter:brightness(1.4);}
+}
+
+
+/* =========================
+   SAFİR
+   ========================= */
+
+.frameSapphire{
+    border:5px solid #249cff;
+    box-shadow:
+        0 0 10px #249cff,
+        0 0 25px #0066ff;
+    animation:sapphirePulse 1.3s infinite alternate;
+}
+
+@keyframes sapphirePulse{
+    from{
+        box-shadow:0 0 7px #249cff;
+    }
+    to{
+        box-shadow:0 0 25px #00c8ff;
+    }
+}
+
+.frameSapphire:before,
+.frameSapphire:after{
+    content:"✦";
+    position:absolute;
+    top:-17px;
+    color:#8be5ff;
+    animation:starFloat 1s infinite alternate;
+}
+
+.frameSapphire:before{
+    left:4px;
+}
+
+.frameSapphire:after{
+    right:4px;
+}
+
+@keyframes starFloat{
+    from{
+        transform:translateY(0) scale(.9);
+    }
+    to{
+        transform:translateY(-5px) scale(1.2);
+    }
+}
+
+
+/* =========================
+   YAKUT
+   ========================= */
+
+.frameRuby{
+    border:5px solid #ff3158;
+    box-shadow:
+        0 0 10px #ff3158,
+        0 0 25px #ff003c;
+    animation:rubyPulse 1s infinite alternate;
+}
+
+@keyframes rubyPulse{
+    from{filter:brightness(.8);}
+    to{filter:brightness(1.5);}
+}
+
+.frameRuby:before{
+    content:"♦";
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#ff7a91;
+    animation:rubySpin 2s linear infinite;
+}
+
+@keyframes rubySpin{
+    from{
+        transform:translateX(-50%) rotate(0);
+    }
+    to{
+        transform:translateX(-50%) rotate(360deg);
+    }
+}
+
+
+/* =========================
+   KOZMİK
+   ========================= */
+
+.frameCosmic{
+    border:5px solid #a855f7;
+    box-shadow:
+        0 0 10px #a855f7,
+        0 0 20px #22d3ee;
+    animation:cosmicColor 3s linear infinite;
+}
+
+@keyframes cosmicColor{
+    0%{filter:hue-rotate(0deg);}
+    50%{filter:hue-rotate(100deg);}
+    100%{filter:hue-rotate(360deg);}
+}
+
+.frameCosmic:before{
+    content:"✦ · ✧ · ✦";
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#d8b4fe;
+    white-space:nowrap;
+    font-size:12px;
+    animation:cosmicStars 1.5s infinite alternate;
+}
+
+@keyframes cosmicStars{
+    from{opacity:.4;}
+    to{opacity:1;}
+}
+
+
+/* =========================
+   GÖLGE
+   ========================= */
+
+.frameShadow{
+    border:5px solid #111;
+    box-shadow:
+        inset 0 0 10px #000,
+        0 0 25px #000;
+    animation:shadowPulse 2s infinite alternate;
+}
+
+@keyframes shadowPulse{
+    from{filter:brightness(.55);}
+    to{filter:brightness(1);}
+}
+
+
+/* =========================
+   ELMAS
+   ========================= */
+
+.frameDiamond{
+    border:5px solid #cfffff;
+    box-shadow:
+        0 0 10px #fff,
+        0 0 25px #5ee7ff;
+    animation:diamondPulse 1.3s infinite alternate;
+}
+
+@keyframes diamondPulse{
+    from{
+        box-shadow:
+        0 0 5px #fff,
+        0 0 12px #5ee7ff;
+    }
+    to{
+        box-shadow:
+        0 0 18px #fff,
+        0 0 35px #00cfff;
+    }
+}
+
+.frameDiamond:before{
+    content:"◆";
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#fff;
+    animation:diamondRotate 2s linear infinite;
+}
+
+@keyframes diamondRotate{
+    from{
+        transform:translateX(-50%) rotate(0);
+    }
+    to{
+        transform:translateX(-50%) rotate(360deg);
+    }
+}
+
+
+/* =========================
+   ENERJİ
+   ========================= */
+
+.frameEnergy{
+    border:5px dotted #22d3ee;
+    box-shadow:
+        0 0 12px #22d3ee,
+        0 0 25px #008cff;
+    animation:energyFlash .7s infinite alternate;
+}
+
+@keyframes energyFlash{
+    from{filter:brightness(.7);}
+    to{filter:brightness(1.6);}
+}
+
+
+/* =========================
+   ATEŞ
+   ========================= */
+
+.frameFire{
+    border:5px solid #ff5a00;
+    box-shadow:
+        0 0 12px #ff5a00,
+        0 0 25px #ff2200;
+    animation:firePulse .7s infinite alternate;
+}
+
+@keyframes firePulse{
+    from{
+        transform:scale(1);
+    }
+    to{
+        transform:scale(1.04);
+    }
+}
+
+.frameFire:before{
+    content:"🔥";
+    position:absolute;
+    top:-23px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:18px;
+    animation:fireFloat .6s infinite alternate;
+}
+
+@keyframes fireFloat{
+    from{
+        transform:translateX(-50%) translateY(2px);
+    }
+    to{
+        transform:translateX(-50%) translateY(-5px);
+    }
+}
+
+
+/* ==============================
+   👑 SÜPER YÖNETİCİ
+   EN ÖZEL ÇERÇEVE
+   ============================== */
+
+.frameAdmin{
+    border:6px solid transparent;
+
+    background:
+        linear-gradient(#fff,#fff) padding-box,
+        linear-gradient(
+            90deg,
+            #ff0000,
+            #ff7a00,
+            #ffff00,
+            #00ff55,
+            #00d9ff,
+            #0066ff,
+            #9b00ff,
+            #ff00aa,
+            #ff0000
+        ) border-box;
+
+    background-size:
+        100% 100%,
+        400% 100%;
+
+    box-shadow:
+        0 0 12px #ff0000,
+        0 0 25px #00ffff,
+        0 0 40px #8a2be2;
+
+    animation:
+        adminRainbow 2.5s linear infinite,
+        adminGlow 1.2s ease-in-out infinite alternate;
+}
+
+
+/* GÖKKUŞAĞI HAREKETİ */
+
+@keyframes adminRainbow{
+
+    0%{
+        background-position:
+        0 0,
+        0% 50%;
+    }
+
+    100%{
+        background-position:
+        0 0,
+        400% 50%;
+    }
+}
+
+
+/* IŞIK PARLAMASI */
+
+@keyframes adminGlow{
+
+    from{
+        filter:brightness(.9);
+        box-shadow:
+        0 0 10px #ff0000,
+        0 0 20px #00ffff,
+        0 0 30px #8a2be2;
+    }
+
+    to{
+        filter:brightness(1.5);
+        box-shadow:
+        0 0 18px #ff0000,
+        0 0 35px #00ffff,
+        0 0 50px #8a2be2;
+    }
+}
+
+
+/* 👑 KRAL TACI */
+
+.frameAdmin:before{
+    content:"👑";
+    position:absolute;
+    top:-30px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:23px;
+    z-index:5;
+    animation:kingCrown 1.2s ease-in-out infinite alternate;
+    filter:drop-shadow(0 0 5px #ffd700);
+}
+
+@keyframes kingCrown{
+
+    from{
+        transform:
+        translateX(-50%)
+        translateY(2px)
+        rotate(-5deg)
+        scale(1);
+    }
+
+    to{
+        transform:
+        translateX(-50%)
+        translateY(-5px)
+        rotate(5deg)
+        scale(1.12);
+    }
+}
+
+</style>
+
+
+<div id="profileScreen">
+
+    <div class="profileBox">
+
+        <div class="profileHeader">
+
+            <button
+                class="profileBack"
+                onclick="closeProfileNew()">
+                ← Geri
+            </button>
+
+            <h2>👤 PROFİL</h2>
+
+            <div style="width:65px;"></div>
+
+        </div>
+
+
+        <div class="profileCard">
+
+            <div
+                id="profileAvatarFrameNew"
+                class="profileAvatarFrame frameBasic">
+
+                <div
+                    id="profileAvatarNew"
+                    class="profileAvatar">
+                    🐹
+                </div>
+
+            </div>
+
+
+            <div
+                id="profileNameNew"
+                class="profileName">
+                Oyuncu
+            </div>
+
+
+            <div
+                id="profileIDNew"
+                class="profileID">
+                ID: --------
+            </div>
+
+
+            <div
+                id="profileScoreNew"
+                class="profileScore">
+                ⭐ 0 PUAN
+            </div>
+
+        </div>
+
+
+        <div class="profileSection">
+
+            <button
+                class="profileSectionButton"
+                onclick="toggleProfileSection('avatarSectionNew')">
+                🐹 Avatarlar
+            </button>
+
+            <div
+                id="avatarSectionNew"
+                class="profileSectionContent">
+
+                <div
+                    id="avatarGridNew"
+                    class="avatarGrid">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="profileSection">
+
+            <button
+                class="profileSectionButton"
+                onclick="toggleProfileSection('frameSectionNew')">
+                🖼️ Avatar Çerçeveleri
+            </button>
+
+            <div
+                id="frameSectionNew"
+                class="profileSectionContent">
+
+                <div
+                    id="frameGridNew"
+                    class="frameGrid">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const profileAvatarsNew=[
+    "🐹","🐭","🐰","🦊",
+    "🐱","🐶","🐼","🐨",
+    "🐯","🦁","🐸","🐵",
+    "🐻","🦝","🦔","🐿️",
+    "🐲","🐺","🐮","🐷"
+];
+
+
+const profileFramesNew=[
+
+    {
+        id:"basic",
+        name:"Basit",
+        score:0
+    },
+
+    {
+        id:"bronze",
+        name:"Bronz",
+        score:0
+    },
+
+    {
+        id:"silver",
+        name:"Gümüş",
+        score:0
+    },
+
+    {
+        id:"gold",
+        name:"Altın",
+        score:5000
+    },
+
+    {
+        id:"hunter",
+        name:"Avcı",
+        score:20000
+    },
+
+    {
+        id:"emerald",
+        name:"Zümrüt",
+        score:40000
+    },
+
+    {
+        id:"sapphire",
+        name:"Safir",
+        score:75000
+    },
+
+    {
+        id:"ruby",
+        name:"Yakut",
+        score:120000
+    },
+
+    {
+        id:"cosmic",
+        name:"Kozmik",
+        score:200000
+    },
+
+    {
+        id:"shadow",
+        name:"Gölge",
+        score:300000
+    },
+
+    {
+        id:"diamond",
+        name:"Elmas",
+        score:450000
+    },
+
+    {
+        id:"energy",
+        name:"Enerji",
+        score:650000
+    },
+
+    {
+        id:"fire",
+        name:"Ateş",
+        score:850000
+    },
+
+    {
+        id:"admin",
+        name:"SÜPER YÖNETİCİ",
+        score:-1,
+        admin:true
+    }
+
+];
+
+
+/* PROFİLİ AÇ */
+
+function openProfile(){
+
+    const menu=
+        document.getElementById("mainMenu");
+
+    const profile=
+        document.getElementById("profileScreen");
+
+    if(menu){
+        menu.style.display="none";
+    }
+
+    if(profile){
+        profile.style.display="block";
+    }
+
+    loadProfileDataNew();
+}
+
+
+/* PROFİLİ KAPAT */
+
+function closeProfileNew(){
+
+    const profile=
+        document.getElementById("profileScreen");
+
+    if(profile){
+        profile.style.display="none";
+    }
+
+    if(typeof showMainMenu==="function"){
+        showMainMenu();
+    }
+}
+
+
+/* PROFİL VERİLERİ */
+
+function loadProfileDataNew(){
+
+    const name=
+        localStorage.getItem(
+            "kostebek_player_name"
+        ) || "Oyuncu";
+
+    const id=
+        localStorage.getItem(
+            "kostebek_player_id"
+        ) || "--------";
+
+    const score=
+        Number(
+            localStorage.getItem(
+                "kostebek_total_score"
+            ) || 0
+        );
+
+    const avatar=
+        localStorage.getItem(
+            "kostebek_avatar"
+        ) || "🐹";
+
+    const frame=
+        localStorage.getItem(
+            "kostebek_frame"
+        ) || "basic";
+
+
+    document.getElementById(
+        "profileNameNew"
+    ).textContent=name;
+
+
+    document.getElementById(
+        "profileIDNew"
+    ).textContent="ID: "+id;
+
+
+    document.getElementById(
+        "profileScoreNew"
+    ).textContent=
+        "⭐ "+
+        score.toLocaleString("tr-TR")+
+        " PUAN";
+
+
+    document.getElementById(
+        "profileAvatarNew"
+    ).textContent=avatar;
+
+
+    applyProfileFrameNew(frame);
+
+    drawProfileAvatarsNew(avatar);
+
+    drawProfileFramesNew(score,frame);
+}
+
+
+/* AVATARLAR */
+
+function drawProfileAvatarsNew(selected){
+
+    const grid=
+        document.getElementById(
+            "avatarGridNew"
+        );
+
+    if(!grid) return;
+
+    grid.innerHTML="";
+
+
+    profileAvatarsNew.forEach(function(avatar){
+
+        const button=
+            document.createElement("button");
+
+        button.className="avatarButton";
+
+        if(avatar===selected){
+            button.classList.add("selected");
+        }
+
+        button.textContent=avatar;
+
+
+        button.onclick=function(){
+
+            localStorage.setItem(
+                "kostebek_avatar",
+                avatar
+            );
+
+            document.getElementById(
+                "profileAvatarNew"
+            ).textContent=avatar;
+
+            drawProfileAvatarsNew(avatar);
+        };
+
+
+        grid.appendChild(button);
+
+    });
+}
+
+
+/* ÇERÇEVELER */
+
+function drawProfileFramesNew(
+    score,
+    selected
+){
+
+    const grid=
+        document.getElementById(
+            "frameGridNew"
+        );
+
+    if(!grid) return;
+
+    grid.innerHTML="";
+
+
+    profileFramesNew.forEach(function(frame){
+
+        const item=
+            document.createElement("div");
+
+        item.className="frameButton";
+
+
+        const locked=
+            frame.admin===true ||
+            (
+                frame.score>0 &&
+                score<frame.score
+            );
+
+
+        if(locked){
+            item.classList.add("locked");
+        }
+
+
+        if(frame.id===selected){
+            item.classList.add("selected");
+        }
+
+
+        const preview=
+            document.createElement("div");
+
+        preview.className=
+            "framePreview frame"+
+            frame.id.charAt(0).toUpperCase()+
+            frame.id.slice(1);
+
+        preview.textContent="🐹";
+
+
+        const title=
+            document.createElement("div");
+
+        title.className="frameTitle";
+
+        title.textContent=
+            frame.name;
+
+
+        const info=
+            document.createElement("div");
+
+        info.className="frameInfo";
+
+
+        if(frame.admin){
+
+            info.textContent=
+                "🔒 Yönetici";
+
+        }else if(
+            frame.score>0 &&
+            score<frame.score
+        ){
+
+            info.textContent=
+                "🔒 "+
+                frame.score.toLocaleString("tr-TR")+
+                " puan";
+
+        }else{
+
+            info.textContent=
+                "✓ Açık";
+
+        }
+
+
+        item.appendChild(preview);
+        item.appendChild(title);
+        item.appendChild(info);
+
+
+        if(!locked){
+
+            item.onclick=function(){
+
+                localStorage.setItem(
+                    "kostebek_frame",
+                    frame.id
+                );
+
+                applyProfileFrameNew(
+                    frame.id
+                );
+
+                drawProfileFramesNew(
+                    score,
+                    frame.id
+                );
+
+            };
+
+        }
+
+
+        grid.appendChild(item);
+
+    });
+}
+
+
+/* ÇERÇEVEYİ UYGULA */
+
+function applyProfileFrameNew(id){
+
+    const frame=
+        document.getElementById(
+            "profileAvatarFrameNew"
+        );
+
+    if(!frame) return;
+
+
+    frame.className=
+        "profileAvatarFrame frame"+
+        id.charAt(0).toUpperCase()+
+        id.slice(1);
+}
+
+
+/* BÖLÜM AÇ / KAPAT */
+
+function toggleProfileSection(id){
+
+    const section=
+        document.getElementById(id);
+
+    if(!section) return;
+
+
+    const isOpen=
+        section.style.display==="block";
+
+
+    document.querySelectorAll(
+        ".profileSectionContent"
+    ).forEach(function(item){
+
+        item.style.display="none";
+
+    });
+
+
+    if(!isOpen){
+
+        section.style.display="block";
+
+    }
+}
+
+</script> 
+<style>
+/* ===== ÜNVAN PROFİL SİSTEMİ ===== */
+
+#titleSectionNew{
+    margin-top:14px;
+}
+
+#titleToggleNew{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:16px;
+    background:rgba(0,0,0,.25);
+    color:white;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+#titleBoxNew{
+    display:none;
+    margin-top:10px;
+    padding:10px;
+    border-radius:18px;
+    background:rgba(0,0,0,.18);
+}
+
+.titleItemNew{
+    padding:13px 10px;
+    margin:8px 0;
+    border-radius:15px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.18);
+    text-align:center;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.titleItemNew.locked{
+    opacity:.38;
+    cursor:not-allowed;
+}
+
+.titleItemNew.selected{
+    box-shadow:0 0 15px rgba(255,255,255,.45);
+    border-color:rgba(255,255,255,.6);
+}
+
+.titleNameNew{
+    display:block;
+    font-size:17px;
+}
+
+.titleRequirementNew{
+    display:block;
+    margin-top:5px;
+    font-size:12px;
+    opacity:.7;
+}
+
+
+/* ACEMİ */
+
+.titleBeginner{
+    color:white;
+}
+
+
+/* AVCI */
+
+.titleHunter{
+    color:#ff9d38;
+    text-shadow:0 0 8px rgba(255,140,0,.5);
+}
+
+
+/* USTA */
+
+.titleExpert{
+    color:#55baff;
+    text-shadow:0 0 9px rgba(60,170,255,.5);
+}
+
+
+/* PROFESYONEL */
+
+.titleElite{
+    color:#c77dff;
+    text-shadow:0 0 10px rgba(180,80,255,.55);
+}
+
+
+/* ELİT */
+
+.titleMaster{
+    color:#35e0b0;
+    text-shadow:0 0 10px rgba(40,230,170,.5);
+}
+
+
+/* EFSANE */
+
+.titleLegend{
+    color:#ffd84d;
+    text-shadow:
+        0 0 6px rgba(255,210,50,.7),
+        0 0 15px rgba(255,180,0,.35);
+}
+
+
+/* MİTİK */
+
+.titleMythic{
+    background:linear-gradient(
+        90deg,
+        #ff5fd7,
+        #a66cff,
+        #ff5fd7
+    );
+    background-size:220% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:mythicMove 3s linear infinite;
+}
+
+@keyframes mythicMove{
+    from{background-position:0% center;}
+    to{background-position:220% center;}
+}
+
+
+/* KOZMİK */
+
+.titleCosmic{
+    background:linear-gradient(
+        90deg,
+        #4de8ff,
+        #7668ff,
+        #ff61df,
+        #4de8ff
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:cosmicMove 4s linear infinite;
+}
+
+@keyframes cosmicMove{
+    from{background-position:0% center;}
+    to{background-position:300% center;}
+}
+
+
+/* EFENDİ */
+
+.titleUltimate{
+    background:linear-gradient(
+        90deg,
+        #ff8c00,
+        #fff08a,
+        #ffae00,
+        #fff08a,
+        #ff8c00
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:goldMove 3.5s linear infinite;
+}
+
+@keyframes goldMove{
+    from{background-position:0% center;}
+    to{background-position:300% center;}
+}
+
+
+/* İMPARATOR */
+
+.titleSupreme{
+    background:linear-gradient(
+        90deg,
+        #ff3030,
+        #ffd23f,
+        #ff3030,
+        #ffd23f,
+        #ff3030
+    );
+    background-size:350% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:supremeMove 2.8s linear infinite;
+    text-shadow:0 0 10px rgba(255,80,50,.35);
+}
+
+@keyframes supremeMove{
+    from{background-position:0% center;}
+    to{background-position:350% center;}
+}
+
+
+/* 1 NUMARALI DESTEKÇİ */
+
+.titleSupporter{
+    background:linear-gradient(
+        90deg,
+        #ff4d4d,
+        #ffb84d,
+        #fff04d,
+        #55df8a,
+        #54c7ff,
+        #9b6cff,
+        #ff5bd7,
+        #ff4d4d
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:supporterMove 7s linear infinite;
+}
+
+@keyframes supporterMove{
+    from{background-position:0% center;}
+    to{background-position:300% center;}
+}
+
+
+/* SÜPER YÖNETİCİ */
+
+.titleAdmin{
+    background:linear-gradient(
+        90deg,
+        #ff2020,
+        #ff9800,
+        #fff000,
+        #35ff65,
+        #20dfff,
+        #5265ff,
+        #d94dff,
+        #ff2020
+    );
+    background-size:500% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:adminTitleMove 2.2s linear infinite;
+    text-shadow:
+        0 0 8px rgba(255,255,255,.5),
+        0 0 18px rgba(255,255,255,.25);
+}
+
+@keyframes adminTitleMove{
+    from{background-position:0% center;}
+    to{background-position:500% center;}
+}
+</style>
+
+
+<script>
+
+/* ===== ÜNVANLAR ===== */
+
+const profileTitlesNew = [
+
+    {
+        id:"beginner",
+        name:"Acemi Köstebek Vurucusu",
+        score:0,
+        className:"titleBeginner"
+    },
+
+    {
+        id:"hunter",
+        name:"Köstebek Avcısı",
+        score:20000,
+        className:"titleHunter"
+    },
+
+    {
+        id:"expert",
+        name:"Usta Vurucu",
+        score:50000,
+        className:"titleExpert"
+    },
+
+    {
+        id:"elite",
+        name:"Profesyonel Köstebekçi",
+        score:100000,
+        className:"titleElite"
+    },
+
+    {
+        id:"master",
+        name:"Elit Avcı",
+        score:200000,
+        className:"titleMaster"
+    },
+
+    {
+        id:"legend",
+        name:"Köstebek Ustası",
+        score:350000,
+        className:"titleLegend"
+    },
+
+    {
+        id:"mythic",
+        name:"Efsane Avcı",
+        score:500000,
+        className:"titleMythic"
+    },
+
+    {
+        id:"cosmic",
+        name:"Mitik Köstebekçi",
+        score:700000,
+        className:"titleCosmic"
+    },
+
+    {
+        id:"ultimate",
+        name:"Köstebeklerin Efendisi",
+        score:850000,
+        className:"titleUltimate"
+    },
+
+    {
+        id:"supreme",
+        name:"Köstebek İmparatoru",
+        score:1000000,
+        className:"titleSupreme"
+    },
+
+    {
+        id:"supporter",
+        name:"1 Numaralı Destekçi",
+        score:-1,
+        special:"supporter",
+        className:"titleSupporter"
+    },
+
+    {
+        id:"admin",
+        name:"SÜPER YÖNETİCİ",
+        score:-1,
+        special:"admin",
+        className:"titleAdmin"
+    }
+
+];
+
+
+/* ===== ÜNVAN BÖLÜMÜ ===== */
+
+function addTitleSectionNew(){
+
+    const profileBox =
+        document.querySelector("#profileScreen .profileBox");
+
+    if(!profileBox) return;
+
+    if(document.getElementById("titleSectionNew")){
+        loadProfileTitlesNew();
+        return;
+    }
+
+    const section =
+        document.createElement("div");
+
+    section.id = "titleSectionNew";
+
+    section.innerHTML = `
+
+        <button
+            id="titleToggleNew"
+            type="button"
+        >
+            🏷️ Ünvanlar
+        </button>
+
+        <div id="titleBoxNew"></div>
+
+    `;
+
+    profileBox.appendChild(section);
+
+    /* AÇ / KAPAT */
+
+    const button =
+        document.getElementById("titleToggleNew");
+
+    const box =
+        document.getElementById("titleBoxNew");
+
+    button.onclick = function(){
+
+        if(box.style.display === "block"){
+
+            box.style.display = "none";
+
+        }else{
+
+            box.style.display = "block";
+
+        }
+
+    };
+
+    loadProfileTitlesNew();
+}
+
+
+/* ===== ÜNVANLARI GÖSTER ===== */
+
+function loadProfileTitlesNew(){
+
+    const box =
+        document.getElementById("titleBoxNew");
+
+    if(!box) return;
+
+    box.innerHTML = "";
+
+    const score =
+        parseInt(
+            localStorage.getItem(
+                "kostebek_total_score"
+            ) || "0"
+        );
+
+    const selected =
+        localStorage.getItem(
+            "kostebek_title"
+        ) || "beginner";
+
+
+    profileTitlesNew.forEach(title => {
+
+        let unlocked = false;
+
+        /* SÜPER YÖNETİCİ */
+
+        if(title.special === "admin"){
+
+            unlocked =
+                localStorage.getItem(
+                    "kostebek_super_admin"
+                ) === "true";
+
+        }
+
+        /* DESTEKÇİ */
+
+        else if(title.special === "supporter"){
+
+            unlocked =
+                localStorage.getItem(
+                    "kostebek_supporter"
+                ) === "true";
+
+        }
+
+        /* NORMAL ÜNVAN */
+
+        else{
+
+            unlocked =
+                score >= title.score;
+
+        }
+
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "titleItemNew " +
+            title.className +
+            (unlocked ? "" : " locked") +
+            (selected === title.id
+                ? " selected"
+                : "");
+
+
+        let requirement = "";
+
+        if(title.special === "admin"){
+
+            requirement = "⭐ Özel Yönetici Ünvanı";
+
+        }
+
+        else if(title.special === "supporter"){
+
+            requirement = "🌈 Özel Ünvan";
+
+        }
+
+        else if(title.score === 0){
+
+            requirement = "🎁 Başlangıçta ücretsiz";
+
+        }
+
+        else{
+
+            requirement =
+                "🏆 " +
+                title.score.toLocaleString("tr-TR") +
+                " puan";
+
+        }
+
+
+        item.innerHTML = `
+
+            <span class="titleNameNew">
+                ${unlocked ? "🏷️" : "🔒"} ${title.name}
+            </span>
+
+            <span class="titleRequirementNew">
+                ${requirement}
+            </span>
+
+        `;
+
+
+        if(unlocked){
+
+            item.onclick = function(){
+
+                localStorage.setItem(
+                    "kostebek_title",
+                    title.id
+                );
+
+                loadProfileTitlesNew();
+                applyProfileTitleNew();
+
+            };
+
+        }
+
+
+        box.appendChild(item);
+
+    });
+
+}
+
+
+/* ===== PROFİLDE SEÇİLİ ÜNVANI GÖSTER ===== */
+
+function applyProfileTitleNew(){
+
+    const selected =
+        localStorage.getItem(
+            "kostebek_title"
+        ) || "beginner";
+
+
+    const title =
+        profileTitlesNew.find(
+            x => x.id === selected
+        ) || profileTitlesNew[0];
+
+
+    let titleElement =
+        document.getElementById(
+            "profileTitleNew"
+        );
+
+
+    if(!titleElement){
+
+        titleElement =
+            document.createElement("div");
+
+        titleElement.id =
+            "profileTitleNew";
+
+        titleElement.style.textAlign =
+            "center";
+
+        titleElement.style.fontSize =
+            "17px";
+
+        titleElement.style.fontWeight =
+            "900";
+
+        titleElement.style.marginTop =
+            "7px";
+
+
+        const scoreElement =
+            document.getElementById(
+                "profileScoreNew"
+            );
+
+
+        if(scoreElement){
+
+            scoreElement.parentNode.insertBefore(
+                titleElement,
+                scoreElement
+            );
+
+        }
+
+    }
+
+
+    titleElement.className =
+        title.className;
+
+    titleElement.innerText =
+        "🏷️ " + title.name;
+
+}
+
+
+/* ===== PROFİL AÇILDIĞINDA ===== */
+
+const oldOpenProfileTitleSystem =
+    window.openProfile;
+
+
+window.openProfile = function(){
+
+    if(oldOpenProfileTitleSystem){
+
+        oldOpenProfileTitleSystem();
+
+    }
+
+
+    setTimeout(function(){
+
+        addTitleSectionNew();
+        applyProfileTitleNew();
+        loadProfileTitlesNew();
+
+    },100);
+
+};
+
+
+/* ===== PROFİL VERİSİ YENİLENDİĞİNDE ===== */
+
+const oldLoadProfileTitleSystem =
+    window.loadProfileDataNew;
+
+
+window.loadProfileDataNew = function(){
+
+    if(oldLoadProfileTitleSystem){
+
+        oldLoadProfileTitleSystem();
+
+    }
+
+
+    setTimeout(function(){
+
+        addTitleSectionNew();
+        applyProfileTitleNew();
+        loadProfileTitlesNew();
+
+    },50);
+
+};
+
+</script>  
+  <style>
+/* ===== İSİM DEĞİŞTİRME ===== */
+
+#nameChangeSectionNew{
+    margin-top:12px;
+}
+
+#nameChangeToggleNew{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:16px;
+    background:rgba(0,0,0,.25);
+    color:white;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+#nameChangeBoxNew{
+    display:none;
+    margin-top:10px;
+    padding:14px;
+    border-radius:18px;
+    background:rgba(0,0,0,.18);
+}
+
+#newPlayerNameInput{
+    width:100%;
+    box-sizing:border-box;
+    padding:13px;
+    border:0;
+    outline:none;
+    border-radius:13px;
+    background:white;
+    color:#222;
+    font-size:15px;
+    text-align:center;
+}
+
+#saveNewPlayerName{
+    width:100%;
+    margin-top:10px;
+    padding:13px;
+    border:0;
+    border-radius:13px;
+    background:#39c96b;
+    color:white;
+    font-size:15px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+#nameChangeMessageNew{
+    margin-top:8px;
+    text-align:center;
+    font-size:13px;
+    font-weight:bold;
+}
+</style>
+
+
+<script>
+
+/* ===== İSİM DEĞİŞTİRME BÖLÜMÜ ===== */
+
+function addNameChangeSectionNew(){
+
+    const profileBox =
+        document.querySelector("#profileScreen .profileBox");
+
+    if(!profileBox) return;
+
+    if(document.getElementById("nameChangeSectionNew")){
+        return;
+    }
+
+    const section =
+        document.createElement("div");
+
+    section.id =
+        "nameChangeSectionNew";
+
+    section.innerHTML = `
+
+        <button
+            id="nameChangeToggleNew"
+            type="button"
+        >
+            ✏️ İsim Değiştir
+        </button>
+
+        <div id="nameChangeBoxNew">
+
+            <input
+                id="newPlayerNameInput"
+                type="text"
+                maxlength="20"
+                placeholder="Yeni oyuncu adın"
+            >
+
+            <button
+                id="saveNewPlayerName"
+                type="button"
+            >
+                💾 İsmi Kaydet
+            </button>
+
+            <div id="nameChangeMessageNew"></div>
+
+        </div>
+
+    `;
+
+    profileBox.appendChild(section);
+
+
+    /* AÇ / KAPAT */
+
+    const toggle =
+        document.getElementById(
+            "nameChangeToggleNew"
+        );
+
+    const box =
+        document.getElementById(
+            "nameChangeBoxNew"
+        );
+
+
+    toggle.onclick = function(){
+
+        if(box.style.display === "block"){
+
+            box.style.display = "none";
+
+        }else{
+
+            box.style.display = "block";
+
+            const input =
+                document.getElementById(
+                    "newPlayerNameInput"
+                );
+
+            input.value =
+                localStorage.getItem(
+                    "kostebek_player_name"
+                ) || "";
+
+        }
+
+    };
+
+
+    /* KAYDET */
+
+    document.getElementById(
+        "saveNewPlayerName"
+    ).onclick = function(){
+
+        const input =
+            document.getElementById(
+                "newPlayerNameInput"
+            );
+
+        const message =
+            document.getElementById(
+                "nameChangeMessageNew"
+            );
+
+        let newName =
+            input.value.trim();
+
+
+        /* BOŞ İSİM */
+
+        if(newName.length === 0){
+
+            message.style.color = "#ff7777";
+            message.innerText =
+                "❌ İsim boş bırakılamaz.";
+
+            return;
+
+        }
+
+
+        /* ÇOK KISA */
+
+        if(newName.length < 3){
+
+            message.style.color = "#ff7777";
+            message.innerText =
+                "❌ İsim en az 3 karakter olmalı.";
+
+            return;
+
+        }
+
+
+        /* KAYDET */
+
+        localStorage.setItem(
+            "kostebek_player_name",
+            newName
+        );
+
+
+        message.style.color = "#65ff9a";
+
+        message.innerText =
+            "✅ İsmin başarıyla değiştirildi!";
+
+
+        /* PROFİLİ GÜNCELLE */
+
+        setTimeout(function(){
+
+            if(typeof loadProfileDataNew === "function"){
+
+                loadProfileDataNew();
+
+            }
+
+            if(typeof applyProfileTitleNew === "function"){
+
+                applyProfileTitleNew();
+
+            }
+
+        },100);
+
+    };
+
+}
+
+
+/* ===== PROFİL AÇILDIĞINDA EKLE ===== */
+
+const oldOpenProfileNameSystem =
+    window.openProfile;
+
+
+window.openProfile = function(){
+
+    if(oldOpenProfileNameSystem){
+
+        oldOpenProfileNameSystem();
+
+    }
+
+
+    setTimeout(function(){
+
+        addNameChangeSectionNew();
+
+    },120);
+
+};
+
+</script>
+  <style>
+/* ===== MARKET EKRANI ===== */
+
+#marketScreenNew{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:6000;
+    background:linear-gradient(180deg,#168447,#063c25);
+    overflow-y:auto;
+    color:white;
+}
+
+.marketBoxNew{
+    width:92%;
+    max-width:500px;
+    margin:0 auto;
+    padding:20px 0 40px;
+}
+
+.marketHeaderNew{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.marketTitleNew{
+    font-size:24px;
+    font-weight:900;
+}
+
+.marketBackNew{
+    border:0;
+    border-radius:12px;
+    padding:10px 14px;
+    background:rgba(0,0,0,.25);
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.marketCardNew{
+    padding:20px;
+    border-radius:22px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.marketPromoTitleNew{
+    text-align:center;
+    font-size:21px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.marketPromoInfoNew{
+    text-align:center;
+    font-size:13px;
+    opacity:.75;
+    margin-bottom:18px;
+}
+
+#marketPromoInputNew{
+    width:100%;
+    box-sizing:border-box;
+    padding:15px;
+    border:0;
+    outline:none;
+    border-radius:14px;
+    background:white;
+    color:#222;
+    font-size:16px;
+    text-align:center;
+    text-transform:uppercase;
+}
+
+#marketPromoButtonNew{
+    width:100%;
+    margin-top:10px;
+    padding:14px;
+    border:0;
+    border-radius:14px;
+    background:#39d879;
+    color:white;
+    font-size:16px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+#marketPromoMessageNew{
+    min-height:20px;
+    margin-top:12px;
+    text-align:center;
+    font-size:14px;
+    font-weight:900;
+}
+</style>
+
+
+<script>
+
+/* ===== MARKET EKRANI ===== */
+
+function createMarketScreenNew(){
+
+    if(document.getElementById("marketScreenNew")){
+        return;
+    }
+
+    const screen =
+        document.createElement("div");
+
+    screen.id =
+        "marketScreenNew";
+
+    screen.innerHTML = `
+
+        <div class="marketBoxNew">
+
+            <div class="marketHeaderNew">
+
+                <div class="marketTitleNew">
+                    🛒 MARKET
+                </div>
+
+                <button
+                    class="marketBackNew"
+                    onclick="closeMarketNew()"
+                >
+                    ← Geri
+                </button>
+
+            </div>
+
+
+            <div class="marketCardNew">
+
+                <div class="marketPromoTitleNew">
+                    🎟️ Promo Kod
+                </div>
+
+                <div class="marketPromoInfoNew">
+                    Elindeki özel promo kodu buraya gir.
+                </div>
+
+                <input
+                    id="marketPromoInputNew"
+                    type="text"
+                    maxlength="50"
+                    placeholder="PROMO KODUNU GİR"
+                >
+
+                <button
+                    id="marketPromoButtonNew"
+                    onclick="useMarketPromoNew()"
+                >
+                    🎁 Kodu Kullan
+                </button>
+
+                <div
+                    id="marketPromoMessageNew"
+                ></div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(screen);
+}
+
+
+/* ===== MARKETİ AÇ ===== */
+
+function openMarketNew(){
+
+    createMarketScreenNew();
+
+    document.getElementById(
+        "marketScreenNew"
+    ).style.display = "block";
+
+}
+
+
+/* ===== MARKETİ KAPAT ===== */
+
+function closeMarketNew(){
+
+    const screen =
+        document.getElementById(
+            "marketScreenNew"
+        );
+
+    if(screen){
+
+        screen.style.display = "none";
+
+    }
+
+}
+
+
+/* ===== PROMO KOD ===== */
+
+function useMarketPromoNew(){
+
+    const input =
+        document.getElementById(
+            "marketPromoInputNew"
+        );
+
+    const message =
+        document.getElementById(
+            "marketPromoMessageNew"
+        );
+
+    if(!input || !message) return;
+
+
+    const code =
+        input.value
+            .trim()
+            .toUpperCase();
+
+
+    if(!code){
+
+        message.style.color =
+            "#ff7777";
+
+        message.innerText =
+            "❌ Lütfen bir promo kodu gir.";
+
+        return;
+
+    }
+
+
+    /*
+     * Şimdilik test kodları.
+     *
+     * GERÇEK KODLARI DAHA SONRA
+     * DEĞİŞTİRECEĞİZ.
+     */
+
+    const SUPER_ADMIN_CODE =
+        "SUPERADMIN-TEST";
+
+    const SUPPORTER_CODE =
+        "DESTEKCI-TEST";
+
+
+    /* ===== SÜPER YÖNETİCİ ===== */
+
+    if(code === SUPER_ADMIN_CODE){
+
+        localStorage.setItem(
+            "kostebek_super_admin",
+            "true"
+        );
+
+        localStorage.setItem(
+            "kostebek_title",
+            "admin"
+        );
+
+        localStorage.setItem(
+            "kostebek_frame",
+            "admin"
+        );
+
+
+        message.style.color =
+            "#7dffb0";
+
+        message.innerText =
+            "👑 SÜPER YÖNETİCİ özellikleri açıldı!";
+
+        input.value = "";
+
+
+        if(typeof loadProfileDataNew === "function"){
+            loadProfileDataNew();
+        }
+
+        return;
+
+    }
+
+
+    /* ===== 1 NUMARALI DESTEKÇİ ===== */
+
+    if(code === SUPPORTER_CODE){
+
+        localStorage.setItem(
+            "kostebek_supporter",
+            "true"
+        );
+
+        localStorage.setItem(
+            "kostebek_title",
+            "supporter"
+        );
+
+
+        message.style.color =
+            "#7dffb0";
+
+        message.innerText =
+            "🌈 1 Numaralı Destekçi ünvanı açıldı!";
+
+        input.value = "";
+
+
+        if(typeof loadProfileDataNew === "function"){
+            loadProfileDataNew();
+        }
+
+        return;
+
+    }
+
+
+    /* ===== GEÇERSİZ KOD ===== */
+
+    message.style.color =
+        "#ff7777";
+
+    message.innerText =
+        "❌ Geçersiz promo kodu.";
+
+}
+
+
+/* ===== MARKET BUTONUNU BUL ===== */
+
+function connectMarketButtonNew(){
+
+    const buttons =
+        document.querySelectorAll("button");
+
+    buttons.forEach(button => {
+
+        const text =
+            button.innerText
+                .trim()
+                .toLowerCase();
+
+        if(text === "market" || text.includes("market")){
+
+            button.onclick =
+                function(){
+
+                    openMarketNew();
+
+                };
+
+        }
+
+    });
+
+}
+
+
+/* ===== SAYFA HAZIR ===== */
+
+setTimeout(function(){
+
+    createMarketScreenNew();
+    connectMarketButtonNew();
+
+},300);
+
+</script>
+  <style>
+/* ===== MARKET PROMO KODLARI ===== */
+
+#marketScreenNew{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:6000;
+    background:linear-gradient(180deg,#168447,#063c25);
+    overflow-y:auto;
+    color:white;
+}
+
+.marketBoxNew{
+    width:92%;
+    max-width:500px;
+    margin:auto;
+    padding:20px 0 40px;
+}
+
+.marketHeaderNew{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.marketTitleNew{
+    font-size:24px;
+    font-weight:900;
+}
+
+.marketBackNew{
+    border:0;
+    border-radius:12px;
+    padding:10px 14px;
+    background:rgba(0,0,0,.25);
+    color:white;
+    font-weight:900;
+}
+
+.marketCardNew{
+    padding:20px;
+    border-radius:22px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);
+}
+
+.marketPromoTitleNew{
+    text-align:center;
+    font-size:21px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.marketPromoInfoNew{
+    text-align:center;
+    font-size:13px;
+    opacity:.75;
+    margin-bottom:18px;
+}
+
+#marketPromoInputNew{
+    width:100%;
+    box-sizing:border-box;
+    padding:15px;
+    border:0;
+    outline:none;
+    border-radius:14px;
+    background:white;
+    color:#222;
+    font-size:15px;
+    text-align:center;
+}
+
+#marketPromoButtonNew{
+    width:100%;
+    margin-top:10px;
+    padding:14px;
+    border:0;
+    border-radius:14px;
+    background:#39d879;
+    color:white;
+    font-size:16px;
+    font-weight:900;
+}
+
+#marketPromoMessageNew{
+    min-height:20px;
+    margin-top:12px;
+    text-align:center;
+    font-size:14px;
+    font-weight:900;
+}
+</style>
+
+
+<script>
+
+/* ===== MARKET OLUŞTUR ===== */
+
+function createMarketScreenNew(){
+
+    if(document.getElementById("marketScreenNew")){
+        return;
+    }
+
+    const screen =
+        document.createElement("div");
+
+    screen.id =
+        "marketScreenNew";
+
+    screen.innerHTML = `
+
+        <div class="marketBoxNew">
+
+            <div class="marketHeaderNew">
+
+                <div class="marketTitleNew">
+                    🛒 MARKET
+                </div>
+
+                <button
+                    class="marketBackNew"
+                    onclick="closeMarketNew()"
+                >
+                    ← Geri
+                </button>
+
+            </div>
+
+            <div class="marketCardNew">
+
+                <div class="marketPromoTitleNew">
+                    🎟️ Promo Kod
+                </div>
+
+                <div class="marketPromoInfoNew">
+                    Özel kodunu girerek özelliklerini aç.
+                </div>
+
+                <input
+                    id="marketPromoInputNew"
+                    type="text"
+                    placeholder="PROMO KODU GİR"
+                    autocomplete="off"
+                >
+
+                <button
+                    id="marketPromoButtonNew"
+                    onclick="useMarketPromoNew()"
+                >
+                    🎁 Kodu Kullan
+                </button>
+
+                <div
+                    id="marketPromoMessageNew"
+                ></div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(screen);
+}
+
+
+/* ===== MARKET AÇ ===== */
+
+function openMarketNew(){
+
+    createMarketScreenNew();
+
+    document.getElementById(
+        "marketScreenNew"
+    ).style.display = "block";
+
+}
+
+
+/* ===== MARKET KAPAT ===== */
+
+function closeMarketNew(){
+
+    const screen =
+        document.getElementById(
+            "marketScreenNew"
+        );
+
+    if(screen){
+
+        screen.style.display = "none";
+
+    }
+
+}
+
+
+/* ===== PROFİLİ YENİLE ===== */
+
+function refreshProfileSpecialFeaturesNew(){
+
+    if(typeof drawProfileFramesNew === "function"){
+
+        const score =
+            parseInt(
+                localStorage.getItem(
+                    "kostebek_total_score"
+                ) || "0"
+            );
+
+        const selectedFrame =
+            localStorage.getItem(
+                "kostebek_frame"
+            ) || "basic";
+
+        drawProfileFramesNew(
+            score,
+            selectedFrame
+        );
+    }
+
+
+    if(typeof loadProfileTitlesNew === "function"){
+        loadProfileTitlesNew();
+    }
+
+
+    if(typeof applyProfileTitleNew === "function"){
+        applyProfileTitleNew();
+    }
+
+
+    if(typeof loadProfileDataNew === "function"){
+        loadProfileDataNew();
+    }
+
+}
+
+
+/* ===== PROMO KODU ===== */
+
+function useMarketPromoNew(){
+
+    const input =
+        document.getElementById(
+            "marketPromoInputNew"
+        );
+
+    const message =
+        document.getElementById(
+            "marketPromoMessageNew"
+        );
+
+    if(!input || !message) return;
+
+
+    /*
+     * Kullanıcının istediği şekilde
+     * TÜM KODLAR KÜÇÜK HARF.
+     */
+
+    const code =
+        input.value.trim();
+
+
+    /* =========================
+       SÜPER YÖNETİCİ AÇ
+       ========================= */
+
+    if(code === "süper yönetici aç"){
+
+        localStorage.setItem(
+            "kostebek_super_admin",
+            "true"
+        );
+
+
+        message.style.color =
+            "#7dffb0";
+
+        message.innerText =
+            "👑 Süper Yönetici özellikleri açıldı!";
+
+
+        input.value = "";
+
+
+        /*
+         * Admin çerçevesini ve ünvanını
+         * otomatik seç.
+         */
+
+        localStorage.setItem(
+            "kostebek_frame",
+            "admin"
+        );
+
+        localStorage.setItem(
+            "kostebek_title",
+            "admin"
+        );
+
+
+        refreshProfileSpecialFeaturesNew();
+
+        return;
+    }
+
+
+    /* =========================
+       SÜPER YÖNETİCİ KAPAT
+       ========================= */
+
+    if(code === "süper yönetici kapat"){
+
+        localStorage.setItem(
+            "kostebek_super_admin",
+            "false"
+        );
+
+
+        /*
+         * Admin çerçevesi seçiliyse
+         * normal çerçeveye dön.
+         */
+
+        if(
+            localStorage.getItem(
+                "kostebek_frame"
+            ) === "admin"
+        ){
+
+            localStorage.setItem(
+                "kostebek_frame",
+                "basic"
+            );
+
+        }
+
+
+        /*
+         * Admin ünvanı seçiliyse
+         * başlangıç ünvanına dön.
+         */
+
+        if(
+            localStorage.getItem(
+                "kostebek_title"
+            ) === "admin"
+        ){
+
+            localStorage.setItem(
+                "kostebek_title",
+                "beginner"
+            );
+
+        }
+
+
+        message.style.color =
+            "#ffd166";
+
+        message.innerText =
+            "🔒 Süper Yönetici özellikleri kilitlendi.";
+
+
+        input.value = "";
+
+
+        refreshProfileSpecialFeaturesNew();
+
+        return;
+    }
+
+
+    /* =========================
+       1 NUMARALI DESTEKÇİ AÇ
+       ========================= */
+
+    if(code === "bir numaralı destekçi aç"){
+
+        localStorage.setItem(
+            "kostebek_supporter",
+            "true"
+        );
+
+
+        message.style.color =
+            "#7dffb0";
+
+        message.innerText =
+            "🌈 1 Numaralı Destekçi ünvanı açıldı!";
+
+
+        input.value = "";
+
+
+        /*
+         * Destekçi ünvanını otomatik seç.
+         */
+
+        localStorage.setItem(
+            "kostebek_title",
+            "supporter"
+        );
+
+
+        refreshProfileSpecialFeaturesNew();
+
+        return;
+    }
+
+
+    /* =========================
+       GEÇERSİZ KOD
+       ========================= */
+
+    message.style.color =
+        "#ff7777";
+
+    message.innerText =
+        "❌ Geçersiz promo kodu.";
+
+}
+
+
+/* ===== MARKET BUTONUNU BAĞLA ===== */
+
+function connectMarketButtonNew(){
+
+    const buttons =
+        document.querySelectorAll("button");
+
+    buttons.forEach(button => {
+
+        const text =
+            button.innerText
+                .trim()
+                .toLowerCase();
+
+        if(
+            text === "market" ||
+            text.includes("market")
+        ){
+
+            button.onclick =
+                function(){
+
+                    openMarketNew();
+
+                };
+
+        }
+
+    });
+
+}
+
+
+/* ===== BAŞLAT ===== */
+
+setTimeout(function(){
+
+    createMarketScreenNew();
+
+    connectMarketButtonNew();
+
+},300);
+
+</script>
+  <script>
+
+/* ===== SÜPER YÖNETİCİ ÇERÇEVE DÜZELTMESİ ===== */
+
+function activateSuperAdminNew(){
+
+    /* Süper yönetici aktif */
+
+    localStorage.setItem(
+        "kostebek_super_admin",
+        "true"
+    );
+
+
+    /* Admin çerçevesini aç */
+
+    localStorage.setItem(
+        "kostebek_frame",
+        "admin"
+    );
+
+
+    /* Admin ünvanını aç */
+
+    localStorage.setItem(
+        "kostebek_title",
+        "admin"
+    );
+
+
+    /* Profil çerçevesini hemen yenile */
+
+    const score =
+        parseInt(
+            localStorage.getItem(
+                "kostebek_total_score"
+            ) || "0"
+        );
+
+
+    if(typeof drawProfileFramesNew === "function"){
+
+        drawProfileFramesNew(
+            score,
+            "admin"
+        );
+
+    }
+
+
+    if(typeof loadProfileTitlesNew === "function"){
+
+        loadProfileTitlesNew();
+
+    }
+
+
+    if(typeof applyProfileTitleNew === "function"){
+
+        applyProfileTitleNew();
+
+    }
+
+
+    if(typeof loadProfileDataNew === "function"){
+
+        loadProfileDataNew();
+
+    }
+
+}
+
+
+/* ===== MARKET PROMO FONKSİYONUNU YENİLE ===== */
+
+window.useMarketPromoNew = function(){
+
+    const input =
+        document.getElementById(
+            "marketPromoInputNew"
+        );
+
+    const message =
+        document.getElementById(
+            "marketPromoMessageNew"
+        );
+
+    if(!input || !message) return;
+
+
+    const code =
+        input.value.trim();
+
+
+    /* =========================
+       SÜPER YÖNETİCİ AÇ
+       ========================= */
+
+    if(code === "süper yönetici aç"){
+
+        activateSuperAdminNew();
+
+
+        message.style.color =
+            "#7dffb0";
+
+        message.innerText =
+            "👑 Süper Yönetici özellikleri açıldı!";
+
+        input.value = "";
+
+        return;
+    }
+
+
+    /* =========================
+       SÜPER YÖNETİCİ KAPAT
+       ========================= */
+
+    if(code === "süper yönetici kapat"){
+
+        localStorage.setItem(
+            "kostebek_super_admin",
+            "false"
+        );
+
+
+        /* Admin çerçevesini bırak */
+
+        if(
+            localStorage.getItem(
+                "kostebek_frame"
+            ) === "admin"
+        ){
+
+            localStorage.setItem(
+                "kostebek_frame",
+                "basic"
+            );
+
+        }
+
+
+        /* Admin ünvanını bırak */
+
+        if(
+            localStorage.getItem(
+                "kostebek_title"
+            ) === "admin"
+        ){
+
+            localStorage.setItem(
+                "kostebek_title",
+                "beginner"
+            );
+
+        }
+
+
+        const score =
+            parseInt(
+                localStorage.getItem(
+                    "kostebek_total_score"
+                ) || "0"
+            );
+
+
+        if(typeof drawProfileFramesNew === "function"){
+
+            drawProfileFramesNew(
+                score,
+                "basic"
+            );
+
+        }
+
+
+        if(typeof loadProfileTitlesNew === "function"){
+
+            loadProfileTitlesNew();
+
+        }
+
+
+        if(typeof applyProfileTitleNew === "function"){
+
+            applyProfileTitleNew();
+
+        }
+
+
+        if(typeof loadProfileDataNew === "function"){
+
+            loadProfileDataNew();
+
+        }
+
+
+        message.style.color =
+            "#ffd166";
+
+        message.innerText =
+            "🔒 Süper Yönetici özellikleri kilitlendi.";
+
+        input.value = "";
+
+        return;
+    }
+
+
+    /* =========================
+       DESTEKÇİ
+       ========================= */
+
+    if(code === "bir numaralı destekçi aç"){
+
+        localStorage.setItem(
+            "kostebek_supporter",
+            "true"
+        );
+
+
+        localStorage.setItem(
+            "kostebek_title",
+            "supporter"
+        );
+
+
+        if(typeof loadProfileTitlesNew === "function"){
+
+            loadProfileTitlesNew();
+
+        }
+
+
+        if(typeof applyProfileTitleNew === "function"){
+
+            applyProfileTitleNew();
+
+        }
+
+
+        message.style.color =
+            "#7dffb0";
+
+        message.innerText =
+            "🌈 1 Numaralı Destekçi ünvanı açıldı!";
+
+        input.value = "";
+
+        return;
+    }
+
+
+    message.style.color =
+        "#ff7777";
+
+    message.innerText =
+        "❌ Geçersiz promo kodu.";
+
+};
+
+  </script>
+  <script>
+(function(){
+
+    const eskiPromo = window.useMarketPromoNew;
+
+    window.useMarketPromoNew = function(){
+
+        const input = document.getElementById("marketPromoInputNew");
+        const message = document.getElementById("marketPromoMessageNew");
+
+        if(!input) return;
+
+        const code = input.value.trim();
+
+        /* BİR NUMARALI DESTEKÇİ AÇ */
+        if(code === "bir numaralı destekçi aç"){
+
+            localStorage.setItem("kostebek_supporter","true");
+            localStorage.setItem("kostebek_title","supporter");
+
+            if(typeof loadProfileTitlesNew === "function"){
+                loadProfileTitlesNew();
+            }
+
+            if(typeof applyProfileTitleNew === "function"){
+                applyProfileTitleNew();
+            }
+
+            if(message){
+                message.textContent = "🌈 1 Numaralı Destekçi ünvanı açıldı ve kuşanıldı!";
+                message.style.color = "#00ff88";
+            }
+
+            input.value = "";
+            return;
+        }
+
+        /* BİR NUMARALI DESTEKÇİ KAPAT */
+        if(code === "bir numaralı destekçi kapat"){
+
+            localStorage.setItem("kostebek_supporter","false");
+
+            /* Eğer şu an destekçi ünvanı kuşanılıyorsa başlangıç ünvanına dön */
+            if(localStorage.getItem("kostebek_title") === "supporter"){
+                localStorage.setItem(
+                    "kostebek_title",
+                    "beginner"
+                );
+            }
+
+            if(typeof loadProfileTitlesNew === "function"){
+                loadProfileTitlesNew();
+            }
+
+            if(typeof applyProfileTitleNew === "function"){
+                applyProfileTitleNew();
+            }
+
+            if(message){
+                message.textContent = "🔒 1 Numaralı Destekçi ünvanı kapatıldı!";
+                message.style.color = "#ffcc00";
+            }
+
+            input.value = "";
+            return;
+        }
+
+        /* Diğer market kodlarını eski sistem çalıştırmaya devam etsin */
+        if(typeof eskiPromo === "function"){
+            eskiPromo();
+        }
+    };
+
+})();
+  </script>
+  <style>
+#leaderboardScreenNew{
+    position:fixed;
+    inset:0;
+    z-index:6000;
+    display:none;
+    overflow-y:auto;
+    background:linear-gradient(160deg,#063d20,#087a3d,#02b85c);
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.leaderboardBoxNew{
+    width:100%;
+    max-width:600px;
+    margin:0 auto;
+}
+
+.leaderboardHeaderNew{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.leaderboardTitleNew{
+    color:white;
+    font-size:25px;
+    font-weight:900;
+}
+
+.leaderboardBackNew{
+    border:0;
+    border-radius:12px;
+    padding:10px 15px;
+    background:rgba(0,0,0,.3);
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.leaderboardInfoNew{
+    background:rgba(255,255,255,.12);
+    border-radius:16px;
+    padding:14px;
+    color:white;
+    text-align:center;
+    margin-bottom:15px;
+    font-weight:bold;
+}
+
+.leaderboardListNew{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.leaderboardPlayerNew{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:white;
+    border-radius:16px;
+    padding:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+    cursor:pointer;
+}
+
+.leaderboardRankNew{
+    width:35px;
+    text-align:center;
+    font-size:20px;
+    font-weight:900;
+}
+
+.leaderboardAvatarNew{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:#e9fff2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    flex-shrink:0;
+}
+
+.leaderboardPlayerInfoNew{
+    flex:1;
+    min-width:0;
+}
+
+.leaderboardNameNew{
+    font-size:17px;
+    font-weight:900;
+    color:#123;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.leaderboardTitleTextNew{
+    font-size:12px;
+    color:#16824b;
+    margin-top:3px;
+}
+
+.leaderboardScoreNew{
+    font-size:16px;
+    font-weight:900;
+    color:#087a3d;
+}
+
+.leaderboardEmptyNew{
+    text-align:center;
+    color:white;
+    padding:40px 15px;
+    font-size:17px;
+    font-weight:bold;
+}
+</style>
+
+<div id="leaderboardScreenNew">
+    <div class="leaderboardBoxNew">
+
+        <div class="leaderboardHeaderNew">
+            <div class="leaderboardTitleNew">🏆 Sıralama</div>
+
+            <button
+                class="leaderboardBackNew"
+                onclick="closeLeaderboardNew()">
+                ← Geri
+            </button>
+        </div>
+
+        <div class="leaderboardInfoNew">
+            🌍 En yüksek puanlı oyuncular
+        </div>
+
+        <div
+            id="leaderboardListNew"
+            class="leaderboardListNew">
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+function createLeaderboardScreenNew(){
+
+    if(document.getElementById("leaderboardScreenNew")){
+        return;
+    }
+}
+
+
+/* SIRALAMAYI AÇ */
+
+function openLeaderboardNew(){
+
+    const screen =
+        document.getElementById("leaderboardScreenNew");
+
+    if(!screen) return;
+
+    screen.style.display = "block";
+
+    loadLeaderboardNew();
+}
+
+
+/* SIRALAMAYI KAPAT */
+
+function closeLeaderboardNew(){
+
+    const screen =
+        document.getElementById("leaderboardScreenNew");
+
+    if(!screen) return;
+
+    screen.style.display = "none";
+
+    if(typeof showMainMenu === "function"){
+        showMainMenu();
+    }
+}
+
+
+/* ŞİMDİLİK ÖRNEK SIRALAMA */
+
+function loadLeaderboardNew(){
+
+    const list =
+        document.getElementById("leaderboardListNew");
+
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    const myName =
+        localStorage.getItem("kostebek_player_name")
+        || "Oyuncu";
+
+    const myScore =
+        parseInt(
+            localStorage.getItem("kostebek_total_score")
+            || "0"
+        );
+
+    const myAvatar =
+        localStorage.getItem("kostebek_avatar")
+        || "🐹";
+
+    const myTitle =
+        localStorage.getItem("kostebek_title")
+        || "beginner";
+
+
+    const players = [
+
+        {
+            name:myName,
+            score:myScore,
+            avatar:myAvatar,
+            title:myTitle
+        }
+
+    ];
+
+
+    players.sort(function(a,b){
+
+        return b.score - a.score;
+
+    });
+
+
+    players.forEach(function(player,index){
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "leaderboardPlayerNew";
+
+
+        let medal = "";
+
+        if(index === 0) medal = "🥇";
+        else if(index === 1) medal = "🥈";
+        else if(index === 2) medal = "🥉";
+        else medal = (index + 1);
+
+
+        row.innerHTML = `
+
+            <div class="leaderboardRankNew">
+                ${medal}
+            </div>
+
+            <div class="leaderboardAvatarNew">
+                ${player.avatar}
+            </div>
+
+            <div class="leaderboardPlayerInfoNew">
+
+                <div class="leaderboardNameNew">
+                    ${escapeLeaderboardTextNew(player.name)}
+                </div>
+
+                <div class="leaderboardTitleTextNew">
+                    ${getLeaderboardTitleNameNew(player.title)}
+                </div>
+
+            </div>
+
+            <div class="leaderboardScoreNew">
+                ${player.score.toLocaleString("tr-TR")}
+            </div>
+
+        `;
+
+
+        row.onclick = function(){
+
+            alert(
+                "👤 " +
+                player.name +
+                "\\n🏆 " +
+                player.score.toLocaleString("tr-TR") +
+                " puan"
+            );
+
+        };
+
+
+        list.appendChild(row);
+
+    });
+
+}
+
+
+/* ÜNVAN İSMİ */
+
+function getLeaderboardTitleNameNew(title){
+
+    const titles = {
+
+        beginner:"Acemi Köstebek Vurucusu",
+
+        hunter:"Köstebek Avcısı",
+
+        expert:"Usta Vurucu",
+
+        professional:"Profesyonel Köstebekçi",
+
+        elite:"Elit Avcı",
+
+        master:"Köstebek Ustası",
+
+        legend:"Efsane Avcı",
+
+        mythic:"Mitik Köstebekçi",
+
+        cosmic:"Köstebeklerin Efendisi",
+
+        ultimate:"Köstebek İmparatoru",
+
+        supporter:"1 Numaralı Destekçi",
+
+        admin:"SÜPER YÖNETİCİ"
+
+    };
+
+    return titles[title] || "Acemi Köstebek Vurucusu";
+}
+
+
+/* GÜVENLİ METİN */
+
+function escapeLeaderboardTextNew(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* ANA MENÜDEKİ SIRALAMA BUTONUNA BAĞLA */
+
+(function(){
+
+    const buttons =
+        document.querySelectorAll("button");
+
+    buttons.forEach(function(button){
+
+        const text =
+            button.textContent.trim().toLowerCase();
+
+        if(text.includes("sıralama")){
+
+            button.onclick =
+                function(){
+
+                    openLeaderboardNew();
+
+                };
+
+        }
+
+    });
+
+})();
+
+</script>
+  <script>
+(function(){
+
+    function fixLeaderboardButton(){
+
+        const buttons = document.querySelectorAll("button");
+
+        buttons.forEach(function(button){
+
+            const text = button.textContent.trim().toLowerCase();
+
+            if(text.includes("sıralama")){
+
+                button.onclick = null;
+
+                button.removeAttribute("onclick");
+
+                button.addEventListener("click", function(e){
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    openLeaderboardNew();
+
+                }, true);
+
+            }
+
+        });
+
+    }
+
+    fixLeaderboardButton();
+
+    setTimeout(fixLeaderboardButton, 300);
+    setTimeout(fixLeaderboardButton, 1000);
+
+})();
+  </script>
+  <script>
+/* ESKİ SIRALAMA SİSTEMİNİ DEVRE DIŞI BIRAK */
+(function(){
+
+    window.openLeaderboard = function(){
+        openLeaderboardNew();
+    };
+
+    window.showLeaderboard = function(){
+        openLeaderboardNew();
+    };
+
+    window.openRanking = function(){
+        openLeaderboardNew();
+    };
+
+    window.showRanking = function(){
+        openLeaderboardNew();
+    };
+
+    window.openOnlineLeaderboard = function(){
+        openLeaderboardNew();
+    };
+
+})();
+  </script>
+  <script>
+function getLeaderboardFrameClassNew(frame){
+
+    const frames = {
+        basic:"frameBasic",
+        bronze:"frameBronze",
+        silver:"frameSilver",
+        gold:"frameGold",
+        hunter:"frameHunter",
+        emerald:"frameEmerald",
+        sapphire:"frameSapphire",
+        ruby:"frameRuby",
+        cosmic:"frameCosmic",
+        shadow:"frameShadow",
+        diamond:"frameDiamond",
+        energy:"frameEnergy",
+        fire:"frameFire",
+        admin:"frameAdmin"
+    };
+
+    return frames[frame] || "frameBasic";
+}
+
+
+/* SIRALAMAYI ÇERÇEVELİ YENİLE */
+
+const oldLoadLeaderboardNew =
+    window.loadLeaderboardNew;
+
+window.loadLeaderboardNew = function(){
+
+    const list =
+        document.getElementById("leaderboardListNew");
+
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    const name =
+        localStorage.getItem("kostebek_player_name")
+        || "Oyuncu";
+
+    const score =
+        parseInt(
+            localStorage.getItem("kostebek_total_score")
+            || "0"
+        );
+
+    const avatar =
+        localStorage.getItem("kostebek_avatar")
+        || "🐹";
+
+    const title =
+        localStorage.getItem("kostebek_title")
+        || "beginner";
+
+    const frame =
+        localStorage.getItem("kostebek_frame")
+        || "basic";
+
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "leaderboardPlayerNew";
+
+
+    row.innerHTML = `
+
+        <div class="leaderboardRankNew">
+            🥇
+        </div>
+
+        <div
+            class="leaderboardAvatarNew ${getLeaderboardFrameClassNew(frame)}"
+            style="
+                width:48px;
+                height:48px;
+                min-width:48px;
+                box-sizing:border-box;
+            "
+        >
+            ${avatar}
+        </div>
+
+        <div class="leaderboardPlayerInfoNew">
+
+            <div class="leaderboardNameNew">
+                ${escapeLeaderboardTextNew(name)}
+            </div>
+
+            <div class="leaderboardTitleTextNew">
+                ${getLeaderboardTitleNameNew(title)}
+            </div>
+
+        </div>
+
+        <div class="leaderboardScoreNew">
+            ${score.toLocaleString("tr-TR")}
+        </div>
+
+    `;
+
+
+    row.onclick = function(){
+
+        if(typeof openProfile === "function"){
+            openProfile();
+        }
+
+    };
+
+
+    list.appendChild(row);
+
+};
+  </script>
+  <style>
+/* SIRALAMADAKİ ÜNVAN EFEKTLERİ */
+
+.leaderboardTitleTextNew.titleBeginnerNew{
+    color:#ffffff;
+}
+
+.leaderboardTitleTextNew.titleHunterNew{
+    color:#ff8c00;
+    text-shadow:0 0 6px rgba(255,140,0,.5);
+}
+
+.leaderboardTitleTextNew.titleExpertNew{
+    color:#2196ff;
+    text-shadow:0 0 6px rgba(33,150,255,.5);
+}
+
+.leaderboardTitleTextNew.titleEliteNew{
+    color:#a855f7;
+    text-shadow:0 0 8px rgba(168,85,247,.6);
+}
+
+.leaderboardTitleTextNew.titleMasterNew{
+    color:#00c98b;
+    text-shadow:0 0 8px rgba(0,201,139,.6);
+}
+
+.leaderboardTitleTextNew.titleLegendNew{
+    color:#ffd700;
+    text-shadow:0 0 9px rgba(255,215,0,.8);
+}
+
+.leaderboardTitleTextNew.titleMythicNew{
+    background:linear-gradient(
+        90deg,
+        #ff00aa,
+        #8b5cf6,
+        #ff00aa
+    );
+    background-size:200% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:leaderboardMythicNew 3s linear infinite;
+}
+
+.leaderboardTitleTextNew.titleCosmicNew{
+    background:linear-gradient(
+        90deg,
+        #00ffff,
+        #8b5cf6,
+        #ff00cc,
+        #00ffff
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:leaderboardCosmicNew 3s linear infinite;
+}
+
+.leaderboardTitleTextNew.titleUltimateNew{
+    background:linear-gradient(
+        90deg,
+        #ff6600,
+        #ffd700,
+        #ff6600
+    );
+    background-size:200% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:leaderboardUltimateNew 3s linear infinite;
+}
+
+.leaderboardTitleTextNew.titleSupremeNew{
+    background:linear-gradient(
+        90deg,
+        #ff0000,
+        #ffd700,
+        #ff0000
+    );
+    background-size:200% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:leaderboardSupremeNew 2.5s linear infinite;
+}
+
+.leaderboardTitleTextNew.titleSupporterNew{
+    background:linear-gradient(
+        90deg,
+        #ff0000,
+        #ff8c00,
+        #ffee00,
+        #00ff66,
+        #00ccff,
+        #7b00ff,
+        #ff00cc,
+        #ff0000
+    );
+    background-size:300% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:leaderboardSupporterNew 5s linear infinite;
+}
+
+.leaderboardTitleTextNew.titleAdminNew{
+    background:linear-gradient(
+        90deg,
+        #ff0000,
+        #ff8800,
+        #ffee00,
+        #00ff44,
+        #00ccff,
+        #5500ff,
+        #ff00cc,
+        #ff0000
+    );
+    background-size:400% auto;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:leaderboardAdminNew 2s linear infinite;
+    text-shadow:
+        0 0 5px rgba(255,255,255,.7),
+        0 0 12px rgba(255,0,255,.5);
+}
+
+@keyframes leaderboardMythicNew{
+    0%{background-position:0% center;}
+    100%{background-position:200% center;}
+}
+
+@keyframes leaderboardCosmicNew{
+    0%{background-position:0% center;}
+    100%{background-position:300% center;}
+}
+
+@keyframes leaderboardUltimateNew{
+    0%{background-position:0% center;}
+    100%{background-position:200% center;}
+}
+
+@keyframes leaderboardSupremeNew{
+    0%{background-position:0% center;}
+    100%{background-position:200% center;}
+}
+
+@keyframes leaderboardSupporterNew{
+    0%{background-position:0% center;}
+    100%{background-position:300% center;}
+}
+
+@keyframes leaderboardAdminNew{
+    0%{background-position:0% center;}
+    100%{background-position:400% center;}
+}
+</style>
+
+<script>
+
+function getLeaderboardTitleClassNew(title){
+
+    const classes = {
+
+        beginner:"titleBeginnerNew",
+
+        hunter:"titleHunterNew",
+
+        expert:"titleExpertNew",
+
+        professional:"titleExpertNew",
+
+        elite:"titleEliteNew",
+
+        master:"titleMasterNew",
+
+        legend:"titleLegendNew",
+
+        mythic:"titleMythicNew",
+
+        cosmic:"titleCosmicNew",
+
+        ultimate:"titleUltimateNew",
+
+        supporter:"titleSupporterNew",
+
+        admin:"titleAdminNew"
+
+    };
+
+    return classes[title] || "titleBeginnerNew";
+}
+
+
+/* SIRALAMAYI TEKRAR ÇİZ */
+
+const leaderboardTitleOldLoad =
+    window.loadLeaderboardNew;
+
+window.loadLeaderboardNew = function(){
+
+    const list =
+        document.getElementById("leaderboardListNew");
+
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    const name =
+        localStorage.getItem("kostebek_player_name")
+        || "Oyuncu";
+
+    const score =
+        parseInt(
+            localStorage.getItem("kostebek_total_score")
+            || "0"
+        );
+
+    const avatar =
+        localStorage.getItem("kostebek_avatar")
+        || "🐹";
+
+    const title =
+        localStorage.getItem("kostebek_title")
+        || "beginner";
+
+    const frame =
+        localStorage.getItem("kostebek_frame")
+        || "basic";
+
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "leaderboardPlayerNew";
+
+
+    row.innerHTML = `
+
+        <div class="leaderboardRankNew">
+            🥇
+        </div>
+
+        <div
+            class="leaderboardAvatarNew ${getLeaderboardFrameClassNew(frame)}"
+            style="
+                width:48px;
+                height:48px;
+                min-width:48px;
+                box-sizing:border-box;
+            "
+        >
+            ${avatar}
+        </div>
+
+        <div class="leaderboardPlayerInfoNew">
+
+            <div class="leaderboardNameNew">
+                ${escapeLeaderboardTextNew(name)}
+            </div>
+
+            <div class="leaderboardTitleTextNew ${getLeaderboardTitleClassNew(title)}">
+                ${getLeaderboardTitleNameNew(title)}
+            </div>
+
+        </div>
+
+        <div class="leaderboardScoreNew">
+            ${score.toLocaleString("tr-TR")}
+        </div>
+
+    `;
+
+
+    row.onclick = function(){
+
+        if(typeof openProfile === "function"){
+            openProfile();
+        }
+
+    };
+
+
+    list.appendChild(row);
+
+};
+
+</script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {
+    getFirestore,
+    doc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBf6vBCS1lHMcfjqn5YvTBlj22eusVqyOA",
+    authDomain: "kostebek-oyunu-219c4.firebaseapp.com",
+    projectId: "kostebek-oyunu-219c4",
+    storageBucket: "kostebek-oyunu-219c4.firebasestorage.app",
+    messagingSenderId: "48642097653",
+    appId: "1:48642097653:web:291a42cd04f03bc86ce0bc"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.kostebekFirebaseDB = db;
+
+window.savePlayerToFirebaseNew = async function(){
+
+    try{
+
+        const playerId =
+            localStorage.getItem("kostebek_player_id");
+
+        const playerName =
+            localStorage.getItem("kostebek_player_name") ||
+            "Oyuncu";
+
+        const score =
+            parseInt(
+                localStorage.getItem("kostebek_total_score") || "0"
+            );
+
+        const avatar =
+            localStorage.getItem("kostebek_avatar") || "🐹";
+
+        const frame =
+            localStorage.getItem("kostebek_frame") || "basic";
+
+        const title =
+            localStorage.getItem("kostebek_title") || "beginner";
+
+        if(!playerId){
+            console.log("Oyuncu ID bulunamadı.");
+            return;
+        }
+
+        await setDoc(
+            doc(db, "players", playerId),
+            {
+                name: playerName,
+                playerId: playerId,
+                score: score,
+                avatar: avatar,
+                frame: frame,
+                title: title
+            },
+            { merge:true }
+        );
+
+        console.log("Firebase oyuncu kaydı başarılı.");
+
+    }catch(error){
+
+        console.error(
+            "Firebase oyuncu kaydı hatası:",
+            error
+        );
+
+    }
+
+};
+
+  </script>
+  <script>
+(function(){
+
+    function firebasePlayerSaveCheck(){
+
+        if(typeof window.savePlayerToFirebaseNew !== "function"){
+            return;
+        }
+
+        const playerId =
+            localStorage.getItem("kostebek_player_id");
+
+        if(!playerId){
+            return;
+        }
+
+        window.savePlayerToFirebaseNew();
+
+    }
+
+    /* Oyun açıldığında mevcut oyuncuyu kaydet */
+    setTimeout(firebasePlayerSaveCheck, 1500);
+
+    /* Ana menüye dönüldüğünde tekrar kaydet */
+    const eskiShowMainMenu =
+        window.showMainMenu;
+
+    if(typeof eskiShowMainMenu === "function"){
+
+        window.showMainMenu = function(){
+
+            eskiShowMainMenu.apply(this, arguments);
+
+            setTimeout(
+                firebasePlayerSaveCheck,
+                500
+            );
+
+        };
+
+    }
+
+})();
+  </script>
+  <script>
+(function(){
+
+    async function updateFirebaseScoreNew(){
+
+        if(typeof window.savePlayerToFirebaseNew !== "function"){
+            return;
+        }
+
+        try{
+
+            await window.savePlayerToFirebaseNew();
+
+            console.log("Firebase puanı güncellendi.");
+
+        }catch(error){
+
+            console.error(
+                "Firebase puan güncelleme hatası:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* Oyun bittikten sonra puanı kontrol et */
+
+    const eskiShowMainMenu =
+        window.showMainMenu;
+
+    if(typeof eskiShowMainMenu === "function"){
+
+        window.showMainMenu = function(){
+
+            if(typeof eskiShowMainMenu === "function"){
+                eskiShowMainMenu.apply(this, arguments);
+            }
+
+            setTimeout(
+                updateFirebaseScoreNew,
+                300
+            );
+
+        };
+
+    }
+
+
+    /* Puan değişirse Firebase'e gönder */
+
+    let sonPuan =
+        localStorage.getItem("kostebek_total_score") || "0";
+
+
+    setInterval(function(){
+
+        const yeniPuan =
+            localStorage.getItem("kostebek_total_score") || "0";
+
+        if(yeniPuan !== sonPuan){
+
+            sonPuan = yeniPuan;
+
+            updateFirebaseScoreNew();
+
+        }
+
+    },1000);
+
+
+})();
+  </script>
+  <script type="module">
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const dbOnline = window.kostebekFirebaseDB || getFirestore();
+
+window.loadOnlineLeaderboardNew = async function(){
+
+    const list =
+        document.getElementById("leaderboardListNew");
+
+    if(!list) return;
+
+    list.innerHTML = `
+        <div class="leaderboardEmptyNew">
+            ⏳ Sıralama yükleniyor...
+        </div>
+    `;
+
+    try{
+
+        const playersRef =
+            collection(dbOnline, "players");
+
+        const q =
+            query(
+                playersRef,
+                orderBy("score", "desc")
+            );
+
+        const snapshot =
+            await getDocs(q);
+
+        list.innerHTML = "";
+
+        if(snapshot.empty){
+
+            list.innerHTML = `
+                <div class="leaderboardEmptyNew">
+                    Henüz oyuncu bulunamadı.
+                </div>
+            `;
+
+            return;
+        }
+
+        let players = [];
+
+        snapshot.forEach(function(docSnap){
+
+            const data = docSnap.data();
+
+            players.push({
+                id: docSnap.id,
+                name: data.name || "Oyuncu",
+                score: Number(data.score || 0),
+                avatar: data.avatar || "🐹",
+                frame: data.frame || "basic",
+                title: data.title || "beginner"
+            });
+
+        });
+
+
+        players.forEach(function(player,index){
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "leaderboardPlayerNew";
+
+
+            let medal;
+
+            if(index === 0){
+                medal = "🥇";
+            }else if(index === 1){
+                medal = "🥈";
+            }else if(index === 2){
+                medal = "🥉";
+            }else{
+                medal = index + 1;
+            }
+
+
+            const frameClass =
+                typeof getLeaderboardFrameClassNew === "function"
+                ? getLeaderboardFrameClassNew(player.frame)
+                : "frameBasic";
+
+
+            const titleClass =
+                typeof getLeaderboardTitleClassNew === "function"
+                ? getLeaderboardTitleClassNew(player.title)
+                : "titleBeginnerNew";
+
+
+            const safeName =
+                typeof escapeLeaderboardTextNew === "function"
+                ? escapeLeaderboardTextNew(player.name)
+                : player.name;
+
+
+            const titleName =
+                typeof getLeaderboardTitleNameNew === "function"
+                ? getLeaderboardTitleNameNew(player.title)
+                : "Acemi Köstebek Vurucusu";
+
+
+            row.innerHTML = `
+
+                <div class="leaderboardRankNew">
+                    ${medal}
+                </div>
+
+                <div
+                    class="leaderboardAvatarNew ${frameClass}"
+                    style="
+                        width:48px;
+                        height:48px;
+                        min-width:48px;
+                        box-sizing:border-box;
+                    "
+                >
+                    ${player.avatar}
+                </div>
+
+                <div class="leaderboardPlayerInfoNew">
+
+                    <div class="leaderboardNameNew">
+                        ${safeName}
+                    </div>
+
+                    <div class="leaderboardTitleTextNew ${titleClass}">
+                        ${titleName}
+                    </div>
+
+                </div>
+
+                <div class="leaderboardScoreNew">
+                    ${player.score.toLocaleString("tr-TR")}
+                </div>
+
+            `;
+
+
+            row.onclick = function(){
+
+                if(
+                    typeof window.openOnlinePlayerProfileNew ===
+                    "function"
+                ){
+
+                    window.openOnlinePlayerProfileNew(player);
+
+                }else{
+
+                    alert(
+                        "👤 " +
+                        player.name +
+                        "\\n🏆 " +
+                        player.score.toLocaleString("tr-TR") +
+                        " puan"
+                    );
+
+                }
+
+            };
+
+
+            list.appendChild(row);
+
+        });
+
+
+    }catch(error){
+
+        console.error(
+            "Firebase sıralama hatası:",
+            error
+        );
+
+        list.innerHTML = `
+            <div class="leaderboardEmptyNew">
+                ❌ Sıralama yüklenemedi.
+                <br><br>
+                Firebase bağlantısını kontrol et.
+            </div>
+        `;
+
+    }
+
+};
+
+
+/* Sıralama açıldığında artık Firebase'den çek */
+
+const eskiOpenLeaderboardNew =
+    window.openLeaderboardNew;
+
+window.openLeaderboardNew = function(){
+
+    const screen =
+        document.getElementById("leaderboardScreenNew");
+
+    if(!screen) return;
+
+    screen.style.display = "block";
+
+    window.loadOnlineLeaderboardNew();
+
+};
+
+  </script>
+  <style>
+#onlinePlayerProfileNew{
+    position:fixed;
+    inset:0;
+    z-index:9000;
+    display:none;
+    overflow-y:auto;
+    background:linear-gradient(160deg,#063d20,#087a3d,#02b85c);
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.onlineProfileBoxNew{
+    width:100%;
+    max-width:500px;
+    margin:0 auto;
+    text-align:center;
+}
+
+.onlineProfileBackNew{
+    display:block;
+    margin-left:auto;
+    margin-bottom:20px;
+    border:0;
+    border-radius:12px;
+    padding:10px 15px;
+    background:rgba(0,0,0,.3);
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+}
+
+.onlineProfileAvatarNew{
+    width:110px;
+    height:110px;
+    margin:20px auto;
+    border-radius:50%;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:60px;
+    box-sizing:border-box;
+}
+
+.onlineProfileNameNew{
+    color:white;
+    font-size:26px;
+    font-weight:900;
+    margin-top:10px;
+}
+
+.onlineProfileIdNew{
+    color:rgba(255,255,255,.8);
+    font-size:14px;
+    margin-top:6px;
+}
+
+.onlineProfileScoreNew{
+    margin:18px auto;
+    background:rgba(255,255,255,.15);
+    border-radius:16px;
+    padding:15px;
+    color:white;
+    font-size:20px;
+    font-weight:900;
+}
+
+.onlineProfileTitleNew{
+    font-size:17px;
+    font-weight:900;
+    margin-top:10px;
+}
+</style>
+
+<div id="onlinePlayerProfileNew">
+
+    <div class="onlineProfileBoxNew">
+
+        <button
+            class="onlineProfileBackNew"
+            onclick="closeOnlinePlayerProfileNew()">
+            ← Sıralamaya Dön
+        </button>
+
+        <div
+            id="onlineProfileAvatarNew"
+            class="onlineProfileAvatarNew">
+        </div>
+
+        <div
+            id="onlineProfileNameNew"
+            class="onlineProfileNameNew">
+        </div>
+
+        <div
+            id="onlineProfileIdNew"
+            class="onlineProfileIdNew">
+        </div>
+
+        <div
+            id="onlineProfileScoreNew"
+            class="onlineProfileScoreNew">
+        </div>
+
+        <div
+            id="onlineProfileTitleNew"
+            class="onlineProfileTitleNew">
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+window.openOnlinePlayerProfileNew = function(player){
+
+    const screen =
+        document.getElementById(
+            "onlinePlayerProfileNew"
+        );
+
+    if(!screen) return;
+
+
+    const avatar =
+        document.getElementById(
+            "onlineProfileAvatarNew"
+        );
+
+    const name =
+        document.getElementById(
+            "onlineProfileNameNew"
+        );
+
+    const id =
+        document.getElementById(
+            "onlineProfileIdNew"
+        );
+
+    const score =
+        document.getElementById(
+            "onlineProfileScoreNew"
+        );
+
+    const title =
+        document.getElementById(
+            "onlineProfileTitleNew"
+        );
+
+
+    avatar.textContent =
+        player.avatar || "🐹";
+
+
+    name.textContent =
+        player.name || "Oyuncu";
+
+
+    id.textContent =
+        "ID: " + (player.id || "Bilinmiyor");
+
+
+    score.textContent =
+        "🏆 " +
+        Number(player.score || 0)
+        .toLocaleString("tr-TR") +
+        " Puan";
+
+
+    const titleName =
+        typeof getLeaderboardTitleNameNew === "function"
+        ? getLeaderboardTitleNameNew(player.title)
+        : "Acemi Köstebek Vurucusu";
+
+
+    title.textContent =
+        "🏷️ " + titleName;
+
+
+    /* Ünvan efektini uygula */
+
+    const titleClass =
+        typeof getLeaderboardTitleClassNew === "function"
+        ? getLeaderboardTitleClassNew(player.title)
+        : "titleBeginnerNew";
+
+
+    title.className =
+        "onlineProfileTitleNew " +
+        titleClass;
+
+
+    /* Çerçeveyi uygula */
+
+    const frameClass =
+        typeof getLeaderboardFrameClassNew === "function"
+        ? getLeaderboardFrameClassNew(player.frame)
+        : "frameBasic";
+
+
+    avatar.className =
+        "onlineProfileAvatarNew " +
+        frameClass;
+
+
+    screen.style.display = "block";
+
+};
+
+
+window.closeOnlinePlayerProfileNew = function(){
+
+    const screen =
+        document.getElementById(
+            "onlinePlayerProfileNew"
+        );
+
+    if(!screen) return;
+
+    screen.style.display = "none";
+
+};
+
+</script>
+  <script>
+window.closeOnlinePlayerProfileNew = function(){
+
+    const profile =
+        document.getElementById("onlinePlayerProfileNew");
+
+    if(profile){
+        profile.style.display = "none";
+    }
+
+    const leaderboard =
+        document.getElementById("leaderboardScreenNew");
+
+    if(leaderboard){
+        leaderboard.style.display = "block";
+    }
+
+    if(typeof window.loadOnlineLeaderboardNew === "function"){
+        window.loadOnlineLeaderboardNew();
+    }
+};
+  </script>
+  <script>
+(function(){
+
+    function fixOnlineProfileBackButton(){
+
+        const button =
+            document.querySelector(
+                "#onlinePlayerProfileNew .onlineProfileBackNew"
+            );
+
+        if(!button) return;
+
+        button.onclick = function(e){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const profile =
+                document.getElementById(
+                    "onlinePlayerProfileNew"
+                );
+
+            const leaderboard =
+                document.getElementById(
+                    "leaderboardScreenNew"
+                );
+
+            if(profile){
+                profile.style.display = "none";
+            }
+
+            if(leaderboard){
+                leaderboard.style.display = "block";
+            }
+
+        };
+    }
+
+    setInterval(
+        fixOnlineProfileBackButton,
+        500
+    );
+
+})();
+  </script>
+  <script>
+document.addEventListener("click", function(e){
+
+    const btn = e.target.closest(
+        ".onlineProfileBackNew"
+    );
+
+    if(!btn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const profile =
+        document.getElementById(
+            "onlinePlayerProfileNew"
+        );
+
+    const leaderboard =
+        document.getElementById(
+            "leaderboardScreenNew"
+        );
+
+    /* Online profili tamamen kapat */
+    if(profile){
+        profile.style.display = "none";
+        profile.style.visibility = "hidden";
+        profile.style.pointerEvents = "none";
+    }
+
+    /* Sıralamayı aç */
+    if(leaderboard){
+        leaderboard.style.display = "block";
+        leaderboard.style.visibility = "visible";
+        leaderboard.style.pointerEvents = "auto";
+        leaderboard.style.zIndex = "8000";
+    }
+
+}, true);
+  </script>
+  <script>
+/* Online profil açılırken ekranı tamamen aktif et */
+const eskiOnlineProfileOpen =
+    window.openOnlinePlayerProfileNew;
+
+window.openOnlinePlayerProfileNew = function(player){
+
+    const profile =
+        document.getElementById("onlinePlayerProfileNew");
+
+    if(profile){
+
+        profile.style.display = "block";
+        profile.style.visibility = "visible";
+        profile.style.pointerEvents = "auto";
+        profile.style.zIndex = "9000";
+
+    }
+
+    if(typeof eskiOnlineProfileOpen === "function"){
+        eskiOnlineProfileOpen(player);
+    }
+
+    /* Eski fonksiyon pointer ayarlarını bozarsa tekrar düzelt */
+    if(profile){
+
+        profile.style.display = "block";
+        profile.style.visibility = "visible";
+        profile.style.pointerEvents = "auto";
+        profile.style.zIndex = "9000";
+
+    }
+};
+
+
+/* Geri dönüş */
+document.addEventListener("click", function(e){
+
+    const btn =
+        e.target.closest(".onlineProfileBackNew");
+
+    if(!btn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const profile =
+        document.getElementById(
+            "onlinePlayerProfileNew"
+        );
+
+    const leaderboard =
+        document.getElementById(
+            "leaderboardScreenNew"
+        );
+
+    if(profile){
+
+        profile.style.display = "none";
+        profile.style.visibility = "hidden";
+        profile.style.pointerEvents = "none";
+
+    }
+
+    if(leaderboard){
+
+        leaderboard.style.display = "block";
+        leaderboard.style.visibility = "visible";
+        leaderboard.style.pointerEvents = "auto";
+
+    }
+
+}, true);
+  </script>
+  <style>
+.onlineProfileTitleNew.titleMythicNew{
+    animation: leaderboardMythicNew 3s linear infinite;
+}
+
+.onlineProfileTitleNew.titleCosmicNew{
+    animation: leaderboardCosmicNew 3s linear infinite;
+}
+
+.onlineProfileTitleNew.titleUltimateNew{
+    animation: leaderboardUltimateNew 3s linear infinite;
+}
+
+.onlineProfileTitleNew.titleSupremeNew{
+    animation: leaderboardSupremeNew 3s linear infinite;
+}
+
+.onlineProfileTitleNew.titleSupporterNew{
+    animation: leaderboardSupporterNew 5s linear infinite;
+}
+
+.onlineProfileTitleNew.titleAdminNew{
+    animation: leaderboardAdminNew 2s linear infinite;
+}
+  </style>
+  <script>
+(function(){
+
+    let eskiFrame =
+        localStorage.getItem("kostebek_frame") || "basic";
+
+    let eskiTitle =
+        localStorage.getItem("kostebek_title") || "beginner";
+
+    setInterval(function(){
+
+        const yeniFrame =
+            localStorage.getItem("kostebek_frame") || "basic";
+
+        const yeniTitle =
+            localStorage.getItem("kostebek_title") || "beginner";
+
+        if(
+            yeniFrame !== eskiFrame ||
+            yeniTitle !== eskiTitle
+        ){
+
+            eskiFrame = yeniFrame;
+            eskiTitle = yeniTitle;
+
+            if(
+                typeof window.savePlayerToFirebaseNew ===
+                "function"
+            ){
+
+                window.savePlayerToFirebaseNew();
+
+                console.log(
+                    "Firebase profil bilgileri güncellendi."
+                );
+            }
+        }
+
+    },500);
+
+})();
+  </script>
+  <script>
+(function () {
+
+    /*
+     * PROFİLDE ÜNVAN DEĞİŞİNCE
+     * SIRALAMA LİSTESİNİ YENİLE
+     */
+
+    let sonUnvan =
+        localStorage.getItem("kostebek_title") || "";
+
+    setInterval(function () {
+
+        const yeniUnvan =
+            localStorage.getItem("kostebek_title") || "";
+
+        /*
+         * Ünvan değişmediyse hiçbir şey yapma
+         */
+        if (yeniUnvan === sonUnvan) {
+            return;
+        }
+
+        sonUnvan = yeniUnvan;
+
+        /*
+         * Sıralama ekranı açık mı?
+         */
+        const siralama =
+            document.getElementById(
+                "leaderboardScreenNew"
+            );
+
+        if (!siralama) {
+            return;
+        }
+
+        /*
+         * Eğer mevcut sıralama yenileme
+         * fonksiyonumuz varsa çalıştır.
+         */
+        if (
+            typeof window.loadOnlineLeaderboardNew ===
+            "function"
+        ) {
+
+            window.loadOnlineLeaderboardNew();
+
+        }
+
+    }, 500);
+
+})();
+  </script>
+ <script>
+const moleHitSound = new Audio("hit.mp3");
+moleHitSound.volume = 0.7;
+moleHitSound.preload = "auto";
+
+function playMoleHitSound(){
+
+    moleHitSound.currentTime = 0;
+
+    moleHitSound.play().catch(function(error){
+        console.log("Ses çalınamadı:", error);
+    });
+
+}
+ </script> 
+  <script>
+(function(){
+
+    const hitSound = new Audio("hit.mp3");
+    hitSound.volume = 0.7;
+    hitSound.preload = "auto";
+
+    document.addEventListener("pointerdown", function(event){
+
+        const target = event.target;
+
+        // Normal köstebek
+        const normalMole = target.closest(".mole");
+
+        // Özel köstebek
+        const specialMole = target.closest(".special-mole");
+
+        if(normalMole || specialMole){
+
+            hitSound.currentTime = 0;
+
+            hitSound.play().catch(function(error){
+                console.log("Hit sesi çalınamadı:", error);
+            });
+
+        }
+
+    }, true);
+
+})();
+  </script>
+  <script>
+(function(){
+
+    const bombSound = new Audio("bomb.mp3");
+
+    bombSound.volume = 0.7;
+    bombSound.preload = "auto";
+
+    document.addEventListener("pointerdown", function(event){
+
+        const target = event.target;
+
+        const bomb = target.closest(".bomb");
+
+        if(bomb){
+
+            bombSound.currentTime = 0;
+
+            bombSound.play().catch(function(error){
+                console.log("Bomba sesi çalınamadı:", error);
+            });
+
+        }
+
+    }, true);
+
+})();
+  </script>
+  <script>
+(function(){
+
+    let lastMyRank = null;
+    let notificationBusy = false;
+
+    function showLeaderboardNotification(message){
+
+        // Oyun ekranındaysak bildirim gösterme
+        const gameScreen =
+            document.getElementById("gameScreen");
+
+        if(
+            gameScreen &&
+            gameScreen.style.display !== "none"
+        ){
+            return;
+        }
+
+        // Ana menü yoksa gösterme
+        const mainMenu =
+            document.getElementById("mainMenu");
+
+        if(!mainMenu){
+            return;
+        }
+
+        // Eski bildirim varsa kaldır
+        const old =
+            document.getElementById("rankNotificationNew");
+
+        if(old){
+            old.remove();
+        }
+
+        const notification =
+            document.createElement("div");
+
+        notification.id = "rankNotificationNew";
+
+        notification.innerHTML = `
+            <div style="
+                font-size:26px;
+                margin-bottom:6px;
+            ">🔔</div>
+
+            <div style="
+                font-size:17px;
+                font-weight:800;
+            ">Sıralama Değişti!</div>
+
+            <div style="
+                margin-top:5px;
+                font-size:14px;
+            ">${message}</div>
+        `;
+
+        notification.style.cssText = `
+            position:fixed;
+            top:25px;
+            left:50%;
+            transform:translateX(-50%);
+            width:calc(100% - 40px);
+            max-width:380px;
+            padding:15px;
+            background:rgba(20,70,35,0.97);
+            color:white;
+            border-radius:18px;
+            text-align:center;
+            box-shadow:0 8px 25px rgba(0,0,0,0.35);
+            z-index:99999;
+            animation:rankNotificationIn 0.3s ease;
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(function(){
+
+            if(notification){
+
+                notification.style.animation =
+                    "rankNotificationOut 0.3s ease";
+
+                setTimeout(function(){
+
+                    if(notification.parentNode){
+                        notification.remove();
+                    }
+
+                },300);
+
+            }
+
+        },3000);
+    }
+
+
+    async function checkMyLeaderboardRank(){
+
+        try{
+
+            if(!window.kostebekFirebaseDB){
+                return;
+            }
+
+            const myId =
+                localStorage.getItem("kostebek_player_id");
+
+            if(!myId){
+                return;
+            }
+
+            const {
+                collection,
+                getDocs,
+                query,
+                orderBy
+            } = await import(
+                "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js"
+            );
+
+            const db =
+                window.kostebekFirebaseDB;
+
+            const playersQuery =
+                query(
+                    collection(db,"players"),
+                    orderBy("score","desc")
+                );
+
+            const snapshot =
+                await getDocs(playersQuery);
+
+            let myRank = null;
+            let rank = 0;
+
+            snapshot.forEach(function(doc){
+
+                rank++;
+
+                const player =
+                    doc.data();
+
+                if(player.playerId === myId){
+
+                    myRank = rank;
+
+                }
+
+            });
+
+            if(myRank === null){
+                return;
+            }
+
+            /*
+               İlk kontrol sadece mevcut sıramızı
+               kaydeder. Böylece oyuna girer girmez
+               yanlış bildirim çıkmaz.
+            */
+
+            if(lastMyRank === null){
+
+                lastMyRank = myRank;
+                return;
+
+            }
+
+            /*
+               Sıramız kötüleştiyse birisi bizi geçti.
+            */
+
+            if(myRank > lastMyRank){
+
+                const oldRank =
+                    lastMyRank;
+
+                const players =
+                    [];
+
+                snapshot.forEach(function(doc){
+
+                    const player =
+                        doc.data();
+
+                    if(player.playerId !== myId){
+                        players.push(player);
+                    }
+
+                });
+
+                players.sort(function(a,b){
+
+                    return (
+                        Number(b.score || 0) -
+                        Number(a.score || 0)
+                    );
+
+                });
+
+                const playerWhoPassed =
+                    players[myRank - 1];
+
+                if(playerWhoPassed){
+
+                    showLeaderboardNotification(
+                        playerWhoPassed.name +
+                        " seni sıralamada geçti!"
+                    );
+
+                }
+
+            }
+
+            lastMyRank = myRank;
+
+        }catch(error){
+
+            console.log(
+                "Sıralama bildirimi kontrol hatası:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // Bildirim tasarımı
+    const style =
+        document.createElement("style");
+
+    style.textContent = `
+        @keyframes rankNotificationIn{
+            from{
+                opacity:0;
+                transform:translate(-50%,-20px);
+            }
+            to{
+                opacity:1;
+                transform:translate(-50%,0);
+            }
+        }
+
+        @keyframes rankNotificationOut{
+            from{
+                opacity:1;
+                transform:translate(-50%,0);
+            }
+            to{
+                opacity:0;
+                transform:translate(-50%,-20px);
+            }
+        }
+    `;
+
+    document.head.appendChild(style);
+
+
+    // Firebase bağlantısının hazırlanmasını bekle
+    setTimeout(function(){
+
+        checkMyLeaderboardRank();
+
+        setInterval(
+            checkMyLeaderboardRank,
+            10000
+        );
+
+    },3000);
+
+})();
+  </script>
+  <script>
+(function(){
+
+    /* =========================================
+       KÖSTEBEK AVI - OYUN İÇİ GÜÇLENDİRİCİLER
+       ========================================= */
+
+    const BOOSTER_PRICES = {
+        bombShield: 10000,
+        fastHit: 5000,
+        freezeTime: 5000
+    };
+
+    /* ===== ENVANTER ===== */
+
+    function getBoosterCount(id){
+        return parseInt(
+            localStorage.getItem("kostebek_booster_" + id) || "0"
+        );
+    }
+
+    function setBoosterCount(id,count){
+        localStorage.setItem(
+            "kostebek_booster_" + id,
+            Math.max(0,count)
+        );
+    }
+
+    /* ===== MARKETTE GÜÇLENDİRİCİLER ===== */
+
+    function createBoosterMarket(){
+
+        if(document.getElementById("boosterMarketNew")){
+            return;
+        }
+
+        const market =
+            document.getElementById("marketScreenNew");
+
+        if(!market){
+            return;
+        }
+
+        const box = document.createElement("div");
+
+        box.id = "boosterMarketNew";
+
+        box.innerHTML = `
+            <div style="
+                margin:25px 0 10px;
+                font-size:24px;
+                font-weight:900;
+                color:white;
+                text-align:center;
+            ">
+                🎮 Oyun Güçlendiricileri
+            </div>
+
+            <div class="boosterMarketCardNew">
+                <div class="boosterIconNew">💣</div>
+
+                <div class="boosterNameNew">
+                    Köstebek Bombası
+                </div>
+
+                <div class="boosterDescriptionNew">
+                    10 saniye boyunca bombalara bassan bile
+                    puan kaybetmezsin.
+                </div>
+
+                <div class="boosterPriceNew">
+                    💰 10.000 Puan
+                </div>
+
+                <button
+                    class="boosterBuyButtonNew"
+                    onclick="buyBoosterNew('bombShield')">
+                    SATIN AL
+                </button>
+            </div>
+
+            <div class="boosterMarketCardNew">
+                <div class="boosterIconNew">⚡</div>
+
+                <div class="boosterNameNew">
+                    Hızlı Vuruş
+                </div>
+
+                <div class="boosterDescriptionNew">
+                    20 saniye boyunca köstebeklere
+                    daha hızlı tepki vermeni sağlar.
+                </div>
+
+                <div class="boosterPriceNew">
+                    💰 5.000 Puan
+                </div>
+
+                <button
+                    class="boosterBuyButtonNew"
+                    onclick="buyBoosterNew('fastHit')">
+                    SATIN AL
+                </button>
+            </div>
+
+            <div class="boosterMarketCardNew">
+                <div class="boosterIconNew">🧊</div>
+
+                <div class="boosterNameNew">
+                    Süre Dondurma
+                </div>
+
+                <div class="boosterDescriptionNew">
+                    Kullanıldığında oyun süresini
+                    5 saniye boyunca durdurur.
+                </div>
+
+                <div class="boosterPriceNew">
+                    💰 5.000 Puan
+                </div>
+
+                <button
+                    class="boosterBuyButtonNew"
+                    onclick="buyBoosterNew('freezeTime')">
+                    SATIN AL
+                </button>
+            </div>
+
+            <div id="boosterMarketMessageNew"
+                 style="
+                    text-align:center;
+                    margin:10px;
+                    min-height:22px;
+                    font-weight:700;
+                 ">
+            </div>
+        `;
+
+        market.appendChild(box);
+    }
+
+
+    /* ===== SATIN ALMA ===== */
+
+    window.buyBoosterNew = function(id){
+
+        const price = BOOSTER_PRICES[id];
+
+        if(!price){
+            return;
+        }
+
+        let totalScore = parseInt(
+            localStorage.getItem("kostebek_total_score") || "0"
+        );
+
+        if(totalScore < price){
+
+            showBoosterMarketMessageNew(
+                "❌ Yeterli puanın yok!"
+            );
+
+            return;
+        }
+
+        totalScore -= price;
+
+        localStorage.setItem(
+            "kostebek_total_score",
+            totalScore
+        );
+
+        setBoosterCount(
+            id,
+            getBoosterCount(id) + 1
+        );
+
+        showBoosterMarketMessageNew(
+            "✅ Güçlendirici satın alındı!"
+        );
+
+        if(
+            typeof window.savePlayerToFirebaseNew ===
+            "function"
+        ){
+            window.savePlayerToFirebaseNew();
+        }
+
+        updateGameBoostersNew();
+    };
+
+
+    function showBoosterMarketMessageNew(message){
+
+        const messageBox =
+            document.getElementById(
+                "boosterMarketMessageNew"
+            );
+
+        if(!messageBox){
+            return;
+        }
+
+        messageBox.textContent = message;
+
+        setTimeout(function(){
+
+            if(messageBox){
+                messageBox.textContent = "";
+            }
+
+        },2000);
+    }
+
+
+    /* =========================================
+       OYUN İÇİ GÜÇLENDİRİCİLER
+       ========================================= */
+
+    function createGameBoosters(){
+
+        if(document.getElementById("gameBoostersNew")){
+            updateGameBoostersNew();
+            return;
+        }
+
+        const gameScreen =
+            document.getElementById("gameScreen");
+
+        if(!gameScreen){
+            return;
+        }
+
+        const box = document.createElement("div");
+
+        box.id = "gameBoostersNew";
+
+        box.innerHTML = `
+
+            <button
+                id="gameBoosterBombShieldNew"
+                class="gameBoosterButtonNew"
+                onclick="useBoosterNew('bombShield')">
+
+                💣
+                <span>
+                    Köstebek Bombası
+                </span>
+                <b id="countBombShieldNew">×0</b>
+
+            </button>
+
+
+            <button
+                id="gameBoosterFastHitNew"
+                class="gameBoosterButtonNew"
+                onclick="useBoosterNew('fastHit')">
+
+                ⚡
+                <span>
+                    Hızlı Vuruş
+                </span>
+                <b id="countFastHitNew">×0</b>
+
+            </button>
+
+
+            <button
+                id="gameBoosterFreezeNew"
+                class="gameBoosterButtonNew"
+                onclick="useBoosterNew('freezeTime')">
+
+                🧊
+                <span>
+                    Süre Dondurma
+                </span>
+                <b id="countFreezeTimeNew">×0</b>
+
+            </button>
+
+        `;
+
+        gameScreen.appendChild(box);
+
+        updateGameBoostersNew();
+    }
+
+
+    /* ===== ENVANTER SAYILARINI GÜNCELLE ===== */
+
+    window.updateGameBoostersNew = function(){
+
+        const bomb =
+            document.getElementById(
+                "countBombShieldNew"
+            );
+
+        const fast =
+            document.getElementById(
+                "countFastHitNew"
+            );
+
+        const freeze =
+            document.getElementById(
+                "countFreezeTimeNew"
+            );
+
+        if(bomb){
+            bomb.textContent =
+                "×" + getBoosterCount("bombShield");
+        }
+
+        if(fast){
+            fast.textContent =
+                "×" + getBoosterCount("fastHit");
+        }
+
+        if(freeze){
+            freeze.textContent =
+                "×" + getBoosterCount("freezeTime");
+        }
+    };
+
+
+    /* =========================================
+       GÜÇLENDİRİCİ KULLANMA
+       ========================================= */
+
+    window.useBoosterNew = function(id){
+
+        const count =
+            getBoosterCount(id);
+
+        if(count <= 0){
+
+            return;
+        }
+
+        /* Bir adet harca */
+        setBoosterCount(
+            id,
+            count - 1
+        );
+
+        updateGameBoostersNew();
+
+
+        /* ===== KÖSTEBEK BOMBASI ===== */
+
+        if(id === "bombShield"){
+
+            window.kostebekBombasiAktif = true;
+
+            if(window.kostebekBombasiTimer){
+                clearTimeout(
+                    window.kostebekBombasiTimer
+                );
+            }
+
+            window.kostebekBombasiTimer =
+                setTimeout(function(){
+
+                    window.kostebekBombasiAktif =
+                        false;
+
+                },10000);
+
+            showBoosterGameMessageNew(
+                "💣 Köstebek Bombası aktif! 10 saniye."
+            );
+        }
+
+
+        /* ===== HIZLI VURUŞ ===== */
+
+        if(id === "fastHit"){
+
+            window.hizliVurusAktif = true;
+
+            if(window.hizliVurusTimer){
+                clearTimeout(
+                    window.hizliVurusTimer
+                );
+            }
+
+            window.hizliVurusTimer =
+                setTimeout(function(){
+
+                    window.hizliVurusAktif =
+                        false;
+
+                },20000);
+
+            showBoosterGameMessageNew(
+                "⚡ Hızlı Vuruş aktif! 20 saniye."
+            );
+        }
+
+
+        /* ===== SÜRE DONDURMA ===== */
+
+        if(id === "freezeTime"){
+
+            window.sureDondurmaAktif = true;
+
+            if(window.sureDondurmaTimer){
+                clearTimeout(
+                    window.sureDondurmaTimer
+                );
+            }
+
+            window.sureDondurmaTimer =
+                setTimeout(function(){
+
+                    window.sureDondurmaAktif =
+                        false;
+
+                },5000);
+
+            showBoosterGameMessageNew(
+                "🧊 Süre 5 saniye donduruldu!"
+            );
+        }
+
+    };
+
+
+    /* ===== OYUN İÇİ MESAJ ===== */
+
+    function showBoosterGameMessageNew(message){
+
+        const old =
+            document.getElementById(
+                "boosterGameMessageNew"
+            );
+
+        if(old){
+            old.remove();
+        }
+
+        const messageBox =
+            document.createElement("div");
+
+        messageBox.id =
+            "boosterGameMessageNew";
+
+        messageBox.textContent =
+            message;
+
+        document.body.appendChild(
+            messageBox
+        );
+
+        setTimeout(function(){
+
+            if(messageBox.parentNode){
+                messageBox.remove();
+            }
+
+        },1800);
+    }
+
+
+    /* =========================================
+       BOMBA KORUMASI
+       ========================================= */
+
+    document.addEventListener(
+        "pointerdown",
+        function(event){
+
+            if(!window.kostebekBombasiAktif){
+                return;
+            }
+
+            const bomb =
+                event.target.closest(".bomb");
+
+            if(!bomb){
+                return;
+            }
+
+            /*
+             * Bomba aktifken bombaya basıldığında
+             * mevcut bomba tıklama olayının çalışmasını
+             * engeller.
+             */
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            bomb.remove();
+
+        },
+        true
+    );
+
+
+    /* =========================================
+       SÜRE DONDURMA
+       ========================================= */
+
+    const oldStartMoleGame =
+        window.startMoleGame;
+
+    /*
+       Mevcut timer'ı bozmamak için gameTimeLeft'ın
+       azalmasını kontrol eden yardımcı sistem.
+    */
+
+    const originalSetInterval =
+        window.setInterval;
+
+
+    /* =========================================
+       OYUN EKRANI AÇILDIĞINDA OLUŞTUR
+       ========================================= */
+
+    const oldOpenGame =
+        window.openGame;
+
+    if(typeof oldOpenGame === "function"){
+
+        window.openGame = function(){
+
+            oldOpenGame.apply(
+                this,
+                arguments
+            );
+
+            setTimeout(function(){
+
+                createGameBoosters();
+
+            },100);
+
+        };
+
+    }
+
+
+    /* =========================================
+       MARKET AÇILDIĞINDA GÜÇLENDİRİCİLERİ EKLE
+       ========================================= */
+
+    const oldOpenMarket =
+        window.openMarketNew;
+
+    if(typeof oldOpenMarket === "function"){
+
+        window.openMarketNew = function(){
+
+            oldOpenMarket.apply(
+                this,
+                arguments
+            );
+
+            setTimeout(function(){
+
+                createBoosterMarket();
+
+            },100);
+
+        };
+
+    }
+
+
+    /* =========================================
+       TASARIM
+       ========================================= */
+
+    const style =
+        document.createElement("style");
+
+    style.textContent = `
+
+        #boosterMarketNew{
+            width:100%;
+            box-sizing:border-box;
+            padding:10px;
+        }
+
+        .boosterMarketCardNew{
+            background:rgba(0,0,0,0.25);
+            border:2px solid rgba(255,255,255,0.25);
+            border-radius:20px;
+            padding:18px;
+            margin:12px 0;
+            text-align:center;
+            color:white;
+        }
+
+        .boosterIconNew{
+            font-size:45px;
+            margin-bottom:5px;
+        }
+
+        .boosterNameNew{
+            font-size:21px;
+            font-weight:900;
+        }
+
+        .boosterDescriptionNew{
+            font-size:14px;
+            line-height:1.4;
+            margin:8px 0;
+            opacity:0.9;
+        }
+
+        .boosterPriceNew{
+            font-size:17px;
+            font-weight:800;
+            margin:10px 0;
+        }
+
+        .boosterBuyButtonNew{
+            border:0;
+            border-radius:12px;
+            padding:12px 25px;
+            font-size:15px;
+            font-weight:900;
+            cursor:pointer;
+        }
+
+        #gameBoostersNew{
+            position:absolute;
+            left:10px;
+            right:10px;
+            bottom:10px;
+            display:flex;
+            gap:7px;
+            justify-content:center;
+            z-index:5000;
+        }
+
+        .gameBoosterButtonNew{
+            flex:1;
+            min-height:58px;
+            border:2px solid rgba(255,255,255,0.3);
+            border-radius:15px;
+            background:rgba(0,0,0,0.65);
+            color:white;
+            font-size:12px;
+            font-weight:800;
+            padding:6px 3px;
+        }
+
+        .gameBoosterButtonNew:first-child{
+            font-size:11px;
+        }
+
+        .gameBoosterButtonNew span{
+            display:block;
+            margin-top:2px;
+        }
+
+        .gameBoosterButtonNew b{
+            display:block;
+            font-size:14px;
+            margin-top:2px;
+        }
+
+        #boosterGameMessageNew{
+            position:fixed;
+            top:85px;
+            left:50%;
+            transform:translateX(-50%);
+            background:rgba(20,20,20,0.92);
+            color:white;
+            padding:12px 18px;
+            border-radius:15px;
+            font-weight:800;
+            z-index:99999;
+            text-align:center;
+            box-shadow:0 5px 20px rgba(0,0,0,0.4);
+        }
+
+    `;
+
+    document.head.appendChild(style);
+
+
+    /*
+       Eğer market ekranı zaten oluşturulmuşsa
+       güçlendirici bölümünü ekle.
+    */
+
+    setTimeout(function(){
+
+        if(
+            document.getElementById(
+                "marketScreenNew"
+            )
+        ){
+
+            createBoosterMarket();
+
+        }
+
+    },1000);
+
+
+})();
+  </script>
+  <script>
+(function(){
+
+    /* ==========================================
+       GÜÇLENDİRİCİLER - GERÇEK OYUN ETKİLERİ
+       ========================================== */
+
+    window.kostebekBombasiAktif =
+        window.kostebekBombasiAktif || false;
+
+    window.hizliVurusAktif =
+        window.hizliVurusAktif || false;
+
+    window.sureDondurmaAktif =
+        window.sureDondurmaAktif || false;
+
+
+    /* ==========================================
+       BOMBA KORUMASI
+       ========================================== */
+
+    /*
+       Mevcut bombaların puan düşürmesini engeller.
+       Bomba yine çıkar ve üzerine basılabilir.
+    */
+
+    document.addEventListener(
+        "pointerdown",
+        function(event){
+
+            if(!window.kostebekBombasiAktif){
+                return;
+            }
+
+            const bomb =
+                event.target.closest(".bomb");
+
+            if(!bomb){
+                return;
+            }
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            bomb.remove();
+
+        },
+        true
+    );
+
+
+    /* ==========================================
+       HIZLI VURUŞ
+       ========================================== */
+
+    /*
+       Hızlı Vuruş aktifken yeni oluşan köstebekler
+       daha kısa sürede kaybolur.
+    */
+
+    const oldSpawnNormalMole =
+        window.spawnNormalMole;
+
+    if(typeof oldSpawnNormalMole === "function"){
+
+        window.spawnNormalMole = function(){
+
+            const before =
+                document.querySelectorAll(
+                    ".mole"
+                ).length;
+
+            oldSpawnNormalMole.apply(
+                this,
+                arguments
+            );
+
+            if(!window.hizliVurusAktif){
+                return;
+            }
+
+            setTimeout(function(){
+
+                const moles =
+                    document.querySelectorAll(
+                        ".mole"
+                    );
+
+                if(moles.length > before){
+
+                    const mole =
+                        moles[moles.length - 1];
+
+                    if(mole &&
+                       mole.parentNode){
+
+                        mole.style.transition =
+                            "transform 0.15s, opacity 0.15s";
+
+                        mole.style.transform =
+                            "scale(0.7)";
+
+                        mole.style.opacity =
+                            "0";
+
+                        setTimeout(function(){
+
+                            if(mole.parentNode){
+                                mole.remove();
+                            }
+
+                        },150);
+
+                    }
+
+                }
+
+            },900);
+
+        };
+
+    }
+
+
+    /* ==========================================
+       SÜRE DONDURMA
+       ========================================== */
+
+    /*
+       Mevcut oyunun 1 saniyelik sayacını takip eder.
+       Dondurma aktifken azalan zamanı geri ekleyerek
+       sayacın ilerlemesini engeller.
+    */
+
+    let lastGameTime =
+        typeof gameTimeLeft === "number"
+        ? gameTimeLeft
+        : null;
+
+    setInterval(function(){
+
+        if(
+            typeof gameRunning === "undefined" ||
+            !gameRunning
+        ){
+            lastGameTime =
+                typeof gameTimeLeft === "number"
+                ? gameTimeLeft
+                : null;
+
+            return;
+        }
+
+        if(
+            typeof gameTimeLeft !== "number"
+        ){
+            return;
+        }
+
+        if(
+            window.sureDondurmaAktif &&
+            lastGameTime !== null &&
+            gameTimeLeft < lastGameTime
+        ){
+
+            gameTimeLeft =
+                lastGameTime;
+
+            const timer =
+                document.getElementById(
+                    "gameTimer"
+                );
+
+            if(timer){
+                timer.innerText =
+                    gameTimeLeft;
+            }
+
+        }
+
+        lastGameTime =
+            gameTimeLeft;
+
+    },50);
+
+
+    /* ==========================================
+       GÜÇLENDİRİCİ DURUM MESAJLARI
+       ========================================== */
+
+    function boosterMessage(text){
+
+        const old =
+            document.getElementById(
+                "boosterEffectMessageNew"
+            );
+
+        if(old){
+            old.remove();
+        }
+
+        const box =
+            document.createElement("div");
+
+        box.id =
+            "boosterEffectMessageNew";
+
+        box.innerText =
+            text;
+
+        box.style.position =
+            "fixed";
+
+        box.style.left =
+            "50%";
+
+        box.style.top =
+            "140px";
+
+        box.style.transform =
+            "translateX(-50%)";
+
+        box.style.zIndex =
+            "999999";
+
+        box.style.background =
+            "rgba(0,0,0,0.88)";
+
+        box.style.color =
+            "white";
+
+        box.style.padding =
+            "12px 18px";
+
+        box.style.borderRadius =
+            "15px";
+
+        box.style.fontWeight =
+            "900";
+
+        box.style.fontSize =
+            "14px";
+
+        box.style.textAlign =
+            "center";
+
+        document.body.appendChild(box);
+
+        setTimeout(function(){
+
+            if(box.parentNode){
+                box.remove();
+            }
+
+        },1800);
+
+    }
+
+
+    /* ==========================================
+       ESKİ useBooster FONKSİYONUNU GÜNCELLE
+       ========================================== */
+
+    const oldUseBooster =
+        window.useBoosterNew;
+
+    window.useBoosterNew =
+        function(id){
+
+            /*
+               Eski sistem envanterden düşürme ve
+               temel işlemleri yapıyor.
+            */
+
+            if(typeof oldUseBooster === "function"){
+
+                oldUseBooster.apply(
+                    this,
+                    arguments
+                );
+
+            }
+
+
+            /* ===== BOMBA ===== */
+
+            if(id === "bombShield"){
+
+                window.kostebekBombasiAktif =
+                    true;
+
+                clearTimeout(
+                    window.kostebekBombasiTimer
+                );
+
+                window.kostebekBombasiTimer =
+                    setTimeout(function(){
+
+                        window.kostebekBombasiAktif =
+                            false;
+
+                    },10000);
+
+                boosterMessage(
+                    "💣 Bomba Koruması aktif! 10 saniye."
+                );
+            }
+
+
+            /* ===== HIZLI VURUŞ ===== */
+
+            if(id === "fastHit"){
+
+                window.hizliVurusAktif =
+                    true;
+
+                clearTimeout(
+                    window.hizliVurusTimer
+                );
+
+                window.hizliVurusTimer =
+                    setTimeout(function(){
+
+                        window.hizliVurusAktif =
+                            false;
+
+                    },20000);
+
+                boosterMessage(
+                    "⚡ Hızlı Vuruş aktif! 20 saniye."
+                );
+            }
+
+
+            /* ===== SÜRE DONDURMA ===== */
+
+            if(id === "freezeTime"){
+
+                window.sureDondurmaAktif =
+                    true;
+
+                clearTimeout(
+                    window.sureDondurmaTimer
+                );
+
+                window.sureDondurmaTimer =
+                    setTimeout(function(){
+
+                        window.sureDondurmaAktif =
+                            false;
+
+                    },5000);
+
+                boosterMessage(
+                    "🧊 Süre Dondurma aktif! 5 saniye."
+                );
+            }
+
+        };
+
+
+    /* ==========================================
+       AKTİF GÜÇLENDİRİCİ GÖRSELİ
+       ========================================== */
+
+    setInterval(function(){
+
+        const bomb =
+            document.getElementById(
+                "gameBoosterBombShieldNew"
+            );
+
+        const fast =
+            document.getElementById(
+                "gameBoosterFastHitNew"
+            );
+
+        const freeze =
+            document.getElementById(
+                "gameBoosterFreezeNew"
+            );
+
+        if(bomb){
+
+            bomb.style.opacity =
+                window.kostebekBombasiAktif
+                ? "1"
+                : "0.85";
+
+            bomb.style.transform =
+                window.kostebekBombasiAktif
+                ? "scale(1.05)"
+                : "scale(1)";
+
+        }
+
+        if(fast){
+
+            fast.style.opacity =
+                window.hizliVurusAktif
+                ? "1"
+                : "0.85";
+
+            fast.style.transform =
+                window.hizliVurusAktif
+                ? "scale(1.05)"
+                : "scale(1)";
+
+        }
+
+        if(freeze){
+
+            freeze.style.opacity =
+                window.sureDondurmaAktif
+                ? "1"
+                : "0.85";
+
+            freeze.style.transform =
+                window.sureDondurmaAktif
+                ? "scale(1.05)"
+                : "scale(1)";
+
+        }
+
+    },100);
+
+
+})();
+</script>
+  
+</html>
